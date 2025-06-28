@@ -2,16 +2,36 @@
     border-collapse: collapse;
     width: 100%;
     table-layout: fixed;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
 }
 
 .users-table td, .users-table th {
-    border: 1px solid #000;
-    padding: 4px;
+    border: 1px solid #333;
+    padding: 8px;
     text-align: center;
     vertical-align: middle;
     font-size: 12px;
     word-wrap: break-word;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.users-table th {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.users-table td {
+    background-color: #222;
+    color: #e0e0e0;
+}
+
+.users-table tr:hover td {
+    background-color: #2d2d2d;
+    cursor: pointer;
 }
 
 .rotate {
@@ -20,13 +40,32 @@
     white-space: normal;
     word-break: break-word;
     line-height: 1.2;
+    text-align: center;
 }
 
 .header {
     font-weight: bold;
-    background-color: #f2f2f2;
 }
 
 .day-cell {
     font-weight: bold;
+    background-color: #1e1e1e;
+}
+
+.light-theme .users-table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.light-theme .users-table td {
+    background-color: #fff;
+    color: #333;
+}
+
+.light-theme .users-table tr:hover td {
+    background-color: #f9f9f9;
+}
+
+.light-theme .day-cell {
+    background-color: #e0e0e0;
 }

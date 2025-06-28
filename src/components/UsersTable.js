@@ -1,12 +1,12 @@
 import React from 'react';
 import './UsersTable.css';
 
-function UsersTable() {
+function UsersTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
     return (
-        <div className="p-4">
-            <h2 className="text-2xl font-bold text-center mb-4 text-gray-800">Число пользователей библиотеки за [месяц] [год]</h2>
+        <div className={`p-4 ${theme}`}>
+            <h2 className="text-2xl font-bold text-center mb-4">Число пользователей библиотеки за [месяц] [год]</h2>
             <table className="users-table">
                 <thead>
                 <tr className="header">

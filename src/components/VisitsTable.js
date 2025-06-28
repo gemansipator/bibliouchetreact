@@ -1,12 +1,12 @@
 import React from 'react';
 import './VisitsTable.css';
 
-function VisitsTable() {
+function VisitsTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
     return (
-        <div className="p-4">
-            <h2 className="text-2xl font-bold text-center mb-4 text-gray-800">Число посещений библиотеки за [месяц] [год]</h2>
+        <div className={`p-4 ${theme}`}>
+            <h2 className="text-2xl font-bold text-center mb-4">Число посещений библиотеки за [месяц] [год]</h2>
             <table className="visits-table">
                 <thead>
                 <tr className="header">
