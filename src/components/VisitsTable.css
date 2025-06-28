@@ -5,9 +5,9 @@
 
 .table-container {
     overflow-x: auto;
-    max-height: 60vh;
+    max-height: 70vh; /* Увеличим высоту для большей видимости */
     overflow-y: auto;
-    padding: 0 10px; /* Уменьшили боковые отступы до 10px */
+    padding: 0 5px; /* Уменьшим боковые отступы до 5px */
 }
 
 .visits-table {
@@ -17,7 +17,6 @@
     font-family: 'Arial', sans-serif;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    /* Убрали overflow: hidden */
     transition: box-shadow 0.3s;
 }
 
