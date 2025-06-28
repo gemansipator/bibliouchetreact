@@ -1,0 +1,32 @@
+.users-table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    font-family: Arial, sans-serif;
+}
+
+.users-table td, .users-table th {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    word-wrap: break-word;
+}
+
+.rotate {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.2;
+}
+
+.header {
+    font-weight: bold;
+    background-color: #f2f2f2;
+}
+
+.day-cell {
+    font-weight: bold;
+}
