@@ -1,3 +1,7 @@
+.table-container {
+    overflow-x: auto;
+}
+
 .users-table {
     border-collapse: collapse;
     width: 100%;
@@ -20,17 +24,17 @@
 }
 
 .users-table th {
-    background-color: #2a2a2a;
-    color: #e0e0e0;
+    background-color: #f2f2f2;
+    color: #333;
 }
 
 .users-table td {
-    background-color: #222;
-    color: #e0e0e0;
+    background-color: #fff;
+    color: #333;
 }
 
 .users-table tr:hover td {
-    background-color: #2d2d2d;
+    background-color: #f9f9f9;
     cursor: pointer;
 }
 
@@ -49,23 +53,23 @@
 
 .day-cell {
     font-weight: bold;
-    background-color: #1e1e1e;
-}
-
-.light-theme .users-table th {
-    background-color: #f2f2f2;
-    color: #333;
-}
-
-.light-theme .users-table td {
-    background-color: #fff;
-    color: #333;
-}
-
-.light-theme .users-table tr:hover td {
-    background-color: #f9f9f9;
-}
-
-.light-theme .day-cell {
     background-color: #e0e0e0;
+}
+
+.dark-theme .users-table th {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.dark-theme .users-table td {
+    background-color: #222;
+    color: #e0e0e0;
+}
+
+.dark-theme .users-table tr:hover td {
+    background-color: #2d2d2d;
+}
+
+.dark-theme .day-cell {
+    background-color: #1e1e1e;
 }
