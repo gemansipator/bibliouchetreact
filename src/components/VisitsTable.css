@@ -1,5 +1,12 @@
+.table-wrapper {
+    position: relative;
+    width: 100%;
+}
+
 .table-container {
     overflow-x: auto;
+    max-height: 60vh; /* Уменьшим для гарантированной прокрутки */
+    overflow-y: auto;
 }
 
 .visits-table {
@@ -11,6 +18,13 @@
     border-radius: 8px;
     overflow: hidden;
     transition: box-shadow 0.3s;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: inherit;
 }
 
 .visits-table td, .visits-table th {
