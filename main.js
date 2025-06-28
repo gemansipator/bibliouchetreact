@@ -10,7 +10,8 @@ function createWindow() {
             contextIsolation: false,
         },
     });
-    win.loadFile('public/index.html');
+    // Загружаем React-приложение через локальный сервер
+    win.loadURL('http://localhost:3000');
 }
 
 app.whenReady().then(() => {
