@@ -8,7 +8,7 @@ function VisitsTable({ theme }) {
         <div className={`p-2 ${theme} flex flex-col h-full`}>
             <h2 className="text-2xl font-bold text-center mb-4">Число посещений библиотеки за [месяц] [год]</h2>
             <div className="table-wrapper flex-grow">
-                <div className="table-container flex-grow">
+                <div className="table-container">
                     <table className="visits-table">
                         <thead className="sticky-header">
                         <tr className="header">
