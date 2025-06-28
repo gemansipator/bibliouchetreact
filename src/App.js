@@ -16,8 +16,8 @@ function App() {
     };
 
     return (
-        <div className="app-container">
-            <div className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white">
+        <div className="app-container flex flex-col h-screen">
+            <div className="flex justify-between items-center p-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white">
                 <h1 className="text-3xl font-bold">Дневник детской библиотеки (детского отделения)</h1>
                 <button
                     onClick={toggleTheme}
@@ -26,7 +26,7 @@ function App() {
                     <i className={`fas ${theme === 'light-theme' ? 'fa-moon' : 'fa-sun'}`}></i>
                 </button>
             </div>
-            <nav className="flex justify-center p-4 space-x-6">
+            <nav className="flex justify-center p-2 space-x-6">
                 <button
                     onClick={() => setActiveTab('users')}
                     className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'} hover:bg-blue-500 transition-colors`}
@@ -40,7 +40,7 @@ function App() {
                     Посещения
                 </button>
             </nav>
-            <div className="p-4 flex-grow">
+            <div className="p-2 flex-grow">
                 {activeTab === 'users' ? <UsersTable theme={theme} /> : <VisitsTable theme={theme} />}
             </div>
         </div>

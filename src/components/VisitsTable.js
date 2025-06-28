@@ -5,10 +5,10 @@ function VisitsTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
     return (
-        <div className={`p-4 ${theme}`}>
+        <div className={`p-2 ${theme} flex flex-col h-full`}>
             <h2 className="text-2xl font-bold text-center mb-4">Число посещений библиотеки за [месяц] [год]</h2>
-            <div className="table-wrapper">
-                <div className="table-container">
+            <div className="table-wrapper flex-grow">
+                <div className="table-container flex-grow">
                     <table className="visits-table">
                         <thead className="sticky-header">
                         <tr className="header">
