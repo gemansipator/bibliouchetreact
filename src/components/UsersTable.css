@@ -162,12 +162,16 @@
 
 /* Стили для отключённой строки */
 .disabled-row {
-    background-color: #ffebee !important; /* Бледно-красный фон с приоритетом */
+    background-color: #ffebee !important; /* Бледно-красный фон */
+    opacity: 0.7 !important;
+}
+.disabled-row td {
+    background-color: #ffebee !important; /* Применяем цвет ко всем ячейкам строки */
     opacity: 0.7 !important;
 }
 
 /* Стили для ячейки дня в отключённой строке */
 .disabled-day {
-    background-color: #b71c1c !important; /* Тёмно-красный фон с приоритетом */
+    background-color: #b71c1c !important; /* Тёмно-красный фон */
     color: white !important;
 }
