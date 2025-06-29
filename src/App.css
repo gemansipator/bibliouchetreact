@@ -5,7 +5,7 @@ html, body {
 }
 
 .app-container {
-    height: 130vh;
+    /*height: 130vh;*/
     display: flex;
     flex-direction: column;
     font-family: 'Arial', sans-serif;
