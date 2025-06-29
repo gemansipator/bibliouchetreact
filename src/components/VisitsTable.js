@@ -81,7 +81,7 @@ function VisitsTable({ theme }) {
         inputs.forEach(input => {
             if (!input.readOnly) {
                 input.addEventListener('click', function() {
-                    if (this.value === '0') {
+                    if (this.value === '0' && !disabledDays.includes(parseInt(this.dataset.index.split('-')[0]))) {
                         this.value = '';
                     }
                 });
@@ -110,7 +110,7 @@ function VisitsTable({ theme }) {
                 });
             }
         });
-    }, []);
+    }, [disabledDays]);
 
     return (
         <div className={`p-4 ${theme}`}>
@@ -199,10 +199,11 @@ function VisitsTable({ theme }) {
                                             type="number"
                                             min="0"
                                             step="1"
-                                            defaultValue="0"
-                                            className="table-input"
+                                            value={values.daily[day - 1][col]} // Используем реальные значения
+                                            className={`table-input ${disabledDays.includes(day - 1) ? 'disabled-input' : ''}`}
                                             data-index={`${day - 1}-${col}`}
                                             disabled={disabledDays.includes(day - 1)}
+                                            onChange={(e) => handleInputChange(day - 1, col, e.target.value)}
                                         />
                                     </td>
                                 ))}
