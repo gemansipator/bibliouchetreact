@@ -150,7 +150,6 @@ function VisitsTable({ theme }) {
                         </tr>
                         <tr className="header"></tr>
                         <tr className="header">
-                            <th>0</th>
                             <th>1</th>
                             <th>2</th>
                             <th>3</th>
@@ -172,6 +171,7 @@ function VisitsTable({ theme }) {
                             <th>19</th>
                             <th>20</th>
                             <th>21</th>
+                            <th>22</th>
                         </tr>
                         </thead>
                         <tbody>

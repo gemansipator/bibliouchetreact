@@ -150,7 +150,6 @@ function UsersTable({ theme }) {
                             <th>В т.ч. РДЧ (из гр.3)</th>
                         </tr>
                         <tr className="header">
-                            <th>0</th>
                             <th>1</th>
                             <th>2</th>
                             <th>3</th>
@@ -171,6 +170,7 @@ function UsersTable({ theme }) {
                             <th>18</th>
                             <th>19</th>
                             <th>20</th>
+                            <th>21</th>
                         </tr>
                         </thead>
                         <tbody>
