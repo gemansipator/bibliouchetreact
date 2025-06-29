@@ -96,6 +96,13 @@
     padding: 0 10px 0 0;
     box-sizing: border-box;
     text-indent: -1.5em; /* Смещение текста вправо примерно на 2 символа */
+    -moz-appearance: textfield; /* Firefox */
+}
+
+.table-input::-webkit-inner-spin-button,
+.table-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .table-input:focus {
