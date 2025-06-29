@@ -172,6 +172,10 @@
 
 /* Стили для ячейки дня в отключённой строке */
 .disabled-day {
-    background-color: #b71c1c !important; /* Тёмно-красный фон */
+    background-color: #b71c1c !important; /* Тёмно-красный фон с приоритетом */
     color: white !important;
+    opacity: 1 !important; /* Убираем прозрачность для ячейки дня */
+}
+.users-table .disabled-day {
+    background-color: #b71c1c !important; /* Усиленная специфичность */
 }
