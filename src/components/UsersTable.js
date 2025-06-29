@@ -8,7 +8,7 @@ function UsersTable({ theme }) {
     // Состояние для хранения значений
     const [values, setValues] = useState({
         initial: Array(columnCount).fill(0), // "Состоит к началу месяца"
-        daily: Array(31).fill().map(() => Array(columnCount).fill(0)), // Дни месяца
+        daily: Array.from({ length: 31 }, () => Array(columnCount).fill(0)), // Исправленная инициализация
     });
 
     // Обновление значений при вводе
@@ -21,7 +21,7 @@ function UsersTable({ theme }) {
                 return { ...prev, initial: newInitial };
             } else {
                 const newDaily = [...prev.daily];
-                const newRow = [...newDaily[row]];
+                const newRow = [...newDaily[row]]; // Убеждаемся, что это массив
                 newRow[col] = newValue;
                 newDaily[row] = newRow;
                 return { ...prev, daily: newDaily };
@@ -44,34 +44,36 @@ function UsersTable({ theme }) {
     useEffect(() => {
         const inputs = document.querySelectorAll('.table-input');
         inputs.forEach(input => {
-            input.addEventListener('click', function() {
-                if (this.value === '0') {
-                    this.value = '';
-                }
-            });
-            input.addEventListener('input', function(e) {
-                let value = this.value.trim();
-                if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
-                    value = value.replace(/^0+/, '');
-                }
-                if (value === '') value = '0';
-                this.value = value;
-                const [row, col] = this.dataset.index.split('-');
-                handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), value);
-            });
-            input.addEventListener('blur', function() {
-                const value = this.value.trim();
-                if (!/^\d+$/.test(value) || value === '') {
-                    this.value = '0';
-                }
-                const [row, col] = this.dataset.index.split('-');
-                handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), this.value);
-            });
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    this.blur();
-                }
-            });
+            if (!input.readOnly) { // Применяем обработчики только к редактируемым полям
+                input.addEventListener('click', function() {
+                    if (this.value === '0') {
+                        this.value = '';
+                    }
+                });
+                input.addEventListener('input', function(e) {
+                    let value = this.value.trim();
+                    if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
+                        value = value.replace(/^0+/, '');
+                    }
+                    if (value === '') value = '0';
+                    this.value = value;
+                    const [row, col] = this.dataset.index.split('-');
+                    handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), value);
+                });
+                input.addEventListener('blur', function() {
+                    const value = this.value.trim();
+                    if (!/^\d+$/.test(value) || value === '') {
+                        this.value = '0';
+                    }
+                    const [row, col] = this.dataset.index.split('-');
+                    handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), this.value);
+                });
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        this.blur();
+                    }
+                });
+            }
         });
     }, []);
 
