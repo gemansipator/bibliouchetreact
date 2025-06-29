@@ -95,6 +95,7 @@
     color: inherit;
     padding: 0 10px 0 0;
     box-sizing: border-box;
+    text-indent: -1.5em; /* Смещение текста вправо примерно на 2 символа */
 }
 
 .table-input:focus {
