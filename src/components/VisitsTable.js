@@ -1,9 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './VisitsTable.css';
 
 function VisitsTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
+    const columnCount = 21; // Количество столбцов (Всего + 20 групп + 2 мероприятия)
 
+    // Состояние для хранения значений
+    const [values, setValues] = useState({
+        initial: Array(columnCount).fill(0), // "Состоит к началу месяца"
+        daily: Array(31).fill().map(() => Array(columnCount).fill(0)), // Дни месяца
+    });
+
+    // Обновление значений при вводе
+    const handleInputChange = (row, col, value) => {
+        const newValue = value === '' ? 0 : parseInt(value) || 0;
+        setValues(prev => {
+            if (row === 'initial') {
+                const newInitial = [...prev.initial];
+                newInitial[col] = newValue;
+                return { ...prev, initial: newInitial };
+            } else {
+                const newDaily = [...prev.daily];
+                const newRow = [...newDaily[row]];
+                newRow[col] = newValue;
+                newDaily[row] = newRow;
+                return { ...prev, daily: newDaily };
+            }
+        });
+    };
+
+    // Вычисления
+    const calculateMonthlyTotal = (col) => {
+        // Сумма только по дням месяца (без "Состоит к началу месяца")
+        return values.daily.reduce((sum, row) => sum + row[col], 0);
+    };
+
+    const calculateYearlyTotal = (col) => {
+        // Сумма "Состоит к началу месяца" + дни месяца
+        return values.initial[col] + values.daily.reduce((sum, row) => sum + row[col], 0);
+    };
+
+    // Эффект для обработки ввода (аналогично твоему коду)
     useEffect(() => {
         const inputs = document.querySelectorAll('.table-input');
         inputs.forEach(input => {
@@ -14,12 +51,16 @@ function VisitsTable({ theme }) {
                 }
                 if (value === '') value = '0';
                 this.value = value;
+                const [row, col] = this.dataset.index.split('-');
+                handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), value);
             });
             input.addEventListener('blur', function() {
                 const value = this.value.trim();
                 if (!/^\d+$/.test(value) || value === '') {
                     this.value = '0';
                 }
+                const [row, col] = this.dataset.index.split('-');
+                handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), this.value);
             });
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
@@ -74,101 +115,65 @@ function VisitsTable({ theme }) {
                         <tbody>
                         <tr>
                             <td className="day-cell">Состоит к началу месяца</td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                            {Array.from({ length: columnCount }, (_, col) => (
+                                <td key={col}>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="1"
+                                        defaultValue="0"
+                                        className="table-input"
+                                        data-index={`initial-${col}`}
+                                    />
+                                </td>
+                            ))}
                         </tr>
                         {days.map(day => (
                             <tr key={day}>
                                 <td className="day-cell">{day}</td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                                {Array.from({ length: columnCount }, (_, col) => (
+                                    <td key={col}>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            step="1"
+                                            defaultValue="0"
+                                            className="table-input"
+                                            data-index={`${day}-${col}`}
+                                        />
+                                    </td>
+                                ))}
                             </tr>
                         ))}
                         <tr>
                             <td className="day-cell">Всего за месяц</td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                            {Array.from({ length: columnCount }, (_, col) => (
+                                <td key={col}>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="1"
+                                        value={calculateMonthlyTotal(col)}
+                                        className="table-input"
+                                        readOnly
+                                    />
+                                </td>
+                            ))}
                         </tr>
                         <tr>
                             <td className="day-cell">Итого с начала года</td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                            {Array.from({ length: columnCount }, (_, col) => (
+                                <td key={col}>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="1"
+                                        value={calculateYearlyTotal(col)}
+                                        className="table-input"
+                                        readOnly
+                                    />
+                                </td>
+                            ))}
                         </tr>
                         </tbody>
                     </table>
