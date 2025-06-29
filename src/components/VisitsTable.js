@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './VisitsTable.css';
 
 function VisitsTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+    useEffect(() => {
+        const inputs = document.querySelectorAll('.table-input');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                const value = this.value.trim();
+                if (!/^\d+$/.test(value) || value === '') {
+                    this.value = '0';
+                }
+            });
+        });
+    }, []);
 
     return (
         <div className={`p-4 ${theme}`}>
@@ -49,101 +61,353 @@ function VisitsTable({ theme }) {
                         <tbody>
                         <tr>
                             <td className="day-cell">Состоит к началу месяца</td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
                         </tr>
                         {days.map(day => (
                             <tr key={day}>
                                 <td className="day-cell">{day}</td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
+                                <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                    const value = e.target.value.trim();
+                                    if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                                }} /></td>
                             </tr>
                         ))}
                         <tr>
                             <td className="day-cell">Всего за месяц</td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
                         </tr>
                         <tr>
                             <td className="day-cell">Итого с начала года</td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
+                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" onBlur={e => {
+                                const value = e.target.value.trim();
+                                if (!/^\d+$/.test(value) || value === '') e.target.value = '0';
+                            }} /></td>
                         </tr>
                         </tbody>
                     </table>
