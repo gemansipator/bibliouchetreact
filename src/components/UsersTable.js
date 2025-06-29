@@ -150,6 +150,7 @@ function UsersTable({ theme }) {
                             <th>В т.ч. РДЧ (из гр.3)</th>
                         </tr>
                         <tr className="header">
+                            <th>0</th>
                             <th>1</th>
                             <th>2</th>
                             <th>3</th>
@@ -170,7 +171,6 @@ function UsersTable({ theme }) {
                             <th>18</th>
                             <th>19</th>
                             <th>20</th>
-                            <th>21</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -185,6 +185,7 @@ function UsersTable({ theme }) {
                                         defaultValue="0"
                                         className="table-input"
                                         data-index={`initial-${col}`}
+                                        onChange={(e) => handleInputChange('initial', col, e.target.value)}
                                     />
                                 </td>
                             ))}
@@ -198,11 +199,12 @@ function UsersTable({ theme }) {
                                             type="number"
                                             min="0"
                                             step="1"
-                                            value={values.daily[day - 1][col]} // Используем реальные значения
+                                            value={values.daily[day - 1][col]}
                                             className={`table-input ${disabledDays.includes(day - 1) ? 'disabled-input' : ''}`}
                                             data-index={`${day - 1}-${col}`}
+                                            readOnly={col === 0}
                                             disabled={disabledDays.includes(day - 1)}
-                                            onChange={(e) => handleInputChange(day - 1, col, e.target.value)}
+                                            onChange={(e) => col !== 0 && handleInputChange(day - 1, col, e.target.value)}
                                         />
                                     </td>
                                 ))}
