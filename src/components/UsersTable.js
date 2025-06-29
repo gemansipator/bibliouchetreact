@@ -142,11 +142,9 @@ function UsersTable({ theme }) {
                             <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
                             <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
                             <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
                         </tr>
                         <tr>
                             <td className="day-cell">Итого с начала года</td>
-                            <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
                             <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
                             <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
                             <td><input type="number" min="0" step="1" defaultValue="0" className="table-input" /></td>
