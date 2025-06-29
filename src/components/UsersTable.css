@@ -179,3 +179,25 @@
 .users-table .disabled-day {
     background-color: #b71c1c !important; /* Усиленная специфичность */
 }
+
+/* Стиль для отключённого поля ввода - визуально показывает 0 */
+.disabled-input {
+    position: relative;
+}
+.disabled-input::after {
+    content: "0";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #b71c1c; /* Цвет нуля совпадает с фоном отключённой ячейки дня */
+    font-size: 12px;
+    pointer-events: none; /* Игнорирует клики */
+    z-index: 1;
+}
+.disabled-input:disabled {
+    color: transparent; /* Скрываем реальное значение */
+}
+.dark-theme .disabled-input::after {
+    color: #ffebee; /* Подходит для тёмной темы */
+}
