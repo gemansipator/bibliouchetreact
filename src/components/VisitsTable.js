@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './VisitsTable.css';
 
 function VisitsTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const columnCount = 21; // Количество столбцов (Всего + 20 групп + 2 мероприятия)
+    const columnCount = 21; // Количество столбцов
 
-    // Состояние для хранения значений
+    // Состояние для хранения значений и отключённых дней
     const [values, setValues] = useState({
-        initial: Array(columnCount).fill(0), // "Состоит к началу месяца"
-        daily: Array.from({ length: 31 }, () => Array(columnCount).fill(0)), // Исправленная инициализация
+        initial: Array(columnCount).fill(0),
+        daily: Array.from({ length: 31 }, () => Array(columnCount).fill(0)),
     });
+    const [disabledDays, setDisabledDays] = useState([]); // Список отключённых дней (индексы 0-30)
 
     // Обновление значений при вводе
     const handleInputChange = (row, col, value) => {
@@ -21,7 +22,7 @@ function VisitsTable({ theme }) {
                 return { ...prev, initial: newInitial };
             } else {
                 const newDaily = [...prev.daily];
-                const newRow = [...newDaily[row]]; // Убеждаемся, что это массив
+                const newRow = [...newDaily[row]];
                 newRow[col] = newValue;
                 newDaily[row] = newRow;
                 return { ...prev, daily: newDaily };
@@ -29,22 +30,56 @@ function VisitsTable({ theme }) {
         });
     };
 
-    // Вычисления
+    // Вычисления с учётом отключённых дней
     const calculateMonthlyTotal = (col) => {
-        // Сумма только по дням месяца (без "Состоит к началу месяца")
-        return values.daily.reduce((sum, row) => sum + row[col], 0);
+        return values.daily.reduce((sum, row, index) => {
+            return disabledDays.includes(index) ? sum : sum + row[col];
+        }, 0);
     };
 
     const calculateYearlyTotal = (col) => {
-        // Сумма "Состоит к началу месяца" + дни месяца
-        return values.initial[col] + values.daily.reduce((sum, row) => sum + row[col], 0);
+        return values.initial[col] + values.daily.reduce((sum, row, index) => {
+            return disabledDays.includes(index) ? sum : sum + row[col];
+        }, 0);
     };
+
+    // Обработка двойного клика
+    const lastClickTime = useRef(0);
+    const lastClickedDay = useRef(null);
+
+    useEffect(() => {
+        const handleDoubleClick = (e) => {
+            const dayCell = e.target.closest('td.day-cell');
+            if (dayCell) {
+                const day = parseInt(dayCell.textContent) - 1; // Индекс дня (0-30)
+                const currentTime = Date.now();
+                if (lastClickedDay.current === day && (currentTime - lastClickTime.current) <= 1500) {
+                    console.log(`Двойной клик на день ${day + 1}, disabledDays:`, disabledDays);
+                    setDisabledDays(prev =>
+                        prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+                    );
+                }
+                lastClickTime.current = currentTime;
+                lastClickedDay.current = day;
+            }
+        };
+
+        document.querySelectorAll('.day-cell').forEach(cell => {
+            cell.addEventListener('click', handleDoubleClick);
+        });
+
+        return () => {
+            document.querySelectorAll('.day-cell').forEach(cell => {
+                cell.removeEventListener('click', handleDoubleClick);
+            });
+        };
+    }, []);
 
     // Эффект для обработки ввода и клика
     useEffect(() => {
         const inputs = document.querySelectorAll('.table-input');
         inputs.forEach(input => {
-            if (!input.readOnly) { // Применяем обработчики только к редактируемым полям
+            if (!input.readOnly) {
                 input.addEventListener('click', function() {
                     if (this.value === '0') {
                         this.value = '';
@@ -156,8 +191,8 @@ function VisitsTable({ theme }) {
                             ))}
                         </tr>
                         {days.map(day => (
-                            <tr key={day}>
-                                <td className="day-cell">{day}</td>
+                            <tr key={day} className={disabledDays.includes(day - 1) ? 'disabled-row' : ''}>
+                                <td className={`day-cell ${disabledDays.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
                                 {Array.from({ length: columnCount }, (_, col) => (
                                     <td key={col}>
                                         <input
@@ -166,7 +201,8 @@ function VisitsTable({ theme }) {
                                             step="1"
                                             defaultValue="0"
                                             className="table-input"
-                                            data-index={`${day}-${col}`}
+                                            data-index={`${day - 1}-${col}`}
+                                            disabled={disabledDays.includes(day - 1)}
                                         />
                                     </td>
                                 ))}

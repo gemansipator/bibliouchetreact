@@ -1,103 +1,103 @@
 /* Основная обертка для таблицы - занимает 100% ширины родителя */
 .table-wrapper {
-    position: relative; /* Позиционирование для дочерних элементов */
-    width: 100%; /* Полная ширина */
+    position: relative;
+    width: 100%;
 }
 
 /* Контейнер таблицы с прокруткой */
 .table-container {
-    overflow-x: auto; /* Горизонтальная прокрутка при необходимости */
-    max-height: 90vh; /* Максимальная высота - 90% от высоты экрана */
-    overflow-y: auto; /* Вертикальная прокрутка при необходимости */
-    padding: 0 2px; /* Боковые отступы */
-    padding-bottom: 15px; /* Отступ снизу для скролла */
+    overflow-x: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 0 2px;
+    padding-bottom: 15px;
 }
 
 /* Основные стили таблицы посещений */
 .visits-table {
-    border-collapse: collapse; /* Границы ячеек сливаются */
-    width: 100%; /* Полная ширина */
-    table-layout: fixed; /* Фиксированная ширина колонок */
-    font-family: 'Arial', sans-serif; /* Шрифт */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Тень */
-    border-radius: 12px; /* Скругленные углы */
-    background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%); /* Градиентный фон */
-    transition: box-shadow 0.3s, background 0.5s; /* Плавные переходы */
-    animation: fadeIn 0.5s ease-in-out; /* Анимация появления */
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
+    transition: box-shadow 0.3s, background 0.5s;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Анимация плавного появления */
 @keyframes fadeIn {
-    from { opacity: 0; } /* Начало - прозрачный */
-    to { opacity: 1; } /* Конец - полностью видимый */
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Темная тема для таблицы */
 .dark-theme .visits-table {
-    background: linear-gradient(145deg, #2d2d2d 0%, #222222 100%); /* Темный градиент */
+    background: linear-gradient(145deg, #2d2d2d 0%, #222222 100%);
 }
 
 /* Заголовок таблицы с фиксированной позицией */
 .sticky-header {
-    position: sticky; /* Прилипает при скролле */
-    top: 0; /* Прилипает к верху */
-    z-index: 10; /* Поверх других элементов */
-    background: inherit; /* Наследует фон родителя */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: inherit;
 }
 
 /* Общие стили для ячеек таблицы */
 .visits-table td,
 .visits-table th {
-    border: 1px solid #444; /* Граница */
-    padding: 12px; /* Внутренние отступы */
-    text-align: center; /* Выравнивание по центру */
-    vertical-align: middle; /* Вертикальное выравнивание */
-    font-size: 12px; /* Размер шрифта */
-    word-wrap: break-word; /* Перенос длинных слов */
-    transition: background-color 0.5s, color 0.5s, border-color 0.5s; /* Плавные переходы */
+    border: 1px solid #444;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    word-wrap: break-word;
+    transition: background-color 0.5s, color 0.5s, border-color 0.5s;
 }
 
 /* Темная тема для ячеек */
 .dark-theme .visits-table td,
 .dark-theme .visits-table th {
-    border: 1px solid #555; /* Граница для темной темы */
+    border: 1px solid #555;
 }
 
 /* Стили заголовочных ячеек */
 .visits-table th {
-    background: linear-gradient(90deg, #e0e0e0 0%, #d0d0d0 100%); /* Градиентный фон */
-    color: #333; /* Цвет текста */
-    font-weight: bold; /* Жирный шрифт */
+    background: linear-gradient(90deg, #e0e0e0 0%, #d0d0d0 100%);
+    color: #333;
+    font-weight: bold;
 }
 
 /* Темная тема для заголовков */
 .dark-theme .visits-table th {
-    background: linear-gradient(90deg, #3a3a3a 0%, #2a2a2a 100%); /* Темный градиент */
-    color: #e0e0e0; /* Светлый текст */
+    background: linear-gradient(90deg, #3a3a3a 0%, #2a2a2a 100%);
+    color: #e0e0e0;
 }
 
 /* Стили ячеек с данными */
 .visits-table td {
-    background: #ffffff; /* Белый фон */
-    color: #333; /* Темный текст */
-    padding: 12px; /* Отступы */
+    background: #ffffff;
+    color: #333;
+    padding: 12px;
 }
 
 /* Темная тема для ячеек с данными */
 .dark-theme .visits-table td {
-    background: #1e1e1e; /* Темный фон */
-    color: #e0e0e0; /* Светлый текст */
+    background: #1e1e1e;
+    color: #e0e0e0;
 }
 
 /* Эффект при наведении на строку */
 .visits-table tr:hover td {
-    background: #f0f0f0; /* Светлый фон */
-    cursor: pointer; /* Курсор-указатель */
+    background: #f0f0f0;
+    cursor: pointer;
 }
 
 /* Темная тема для эффекта наведения */
 .dark-theme .visits-table tr:hover td {
-    background: #2d2d2d; /* Темный фон */
+    background: #2d2d2d;
 }
 
 /* Стили для полей ввода в таблице */
@@ -106,13 +106,13 @@
     border: none;
     background: transparent;
     text-align: right;
-    font-size: 16px; /* Размер шрифта */
+    font-size: 16px;
     color: inherit;
     padding: 0 10px 0 0;
     box-sizing: border-box;
-    text-indent: -1em; /* Уменьшенный отступ */
-    height: 30px; /* Фиксированная высота */
-    line-height: 30px; /* Выравнивание по вертикали */
+    text-indent: -1em;
+    height: 30px;
+    line-height: 30px;
     -moz-appearance: textfield;
 }
 
@@ -125,39 +125,51 @@
 
 /* Стили для поля ввода при фокусе */
 .table-input:focus {
-    outline: none; /* Убирает стандартный контур */
-    border-bottom: 2px solid #005bbb; /* Подчеркивание */
-    background: #f0f0f0; /* Фон */
+    outline: none;
+    border-bottom: 2px solid #005bbb;
+    background: #f0f0f0;
 }
 
 /* Темная тема для поля ввода при фокусе */
 .dark-theme .table-input:focus {
-    border-bottom: 2px solid #007acc; /* Синее подчеркивание */
-    background: #2d2d2d; /* Темный фон */
+    border-bottom: 2px solid #007acc;
+    background: #2d2d2d;
 }
 
 /* Стиль для вертикального текста (поворот на 180 градусов) */
 .rotate {
-    writing-mode: vertical-rl; /* Вертикальный текст */
-    transform: rotate(180deg); /* Поворот */
-    white-space: normal; /* Перенос строк */
-    word-break: break-word; /* Перенос слов */
-    line-height: 1.2; /* Межстрочный интервал */
-    text-align: center; /* Выравнивание по центру */
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.2;
+    text-align: center;
 }
 
 /* Общий стиль для заголовков */
 .header {
-    font-weight: bold; /* Жирный шрифт */
+    font-weight: bold;
 }
 
 /* Стиль для ячеек с днями */
 .day-cell {
-    font-weight: bold; /* Жирный шрифт */
-    background: #e0e0e0; /* Светло-серый фон */
+    font-weight: bold;
+    background: #e0e0e0;
 }
 
 /* Темная тема для ячеек с днями */
 .dark-theme .day-cell {
-    background: #1e1e1e; /* Темный фон */
+    background: #1e1e1e;
+}
+
+/* Стили для отключённой строки */
+.disabled-row {
+    background-color: #ffebee !important; /* Бледно-красный фон с приоритетом */
+    opacity: 0.7 !important;
+}
+
+/* Стили для ячейки дня в отключённой строке */
+.disabled-day {
+    background-color: #b71c1c !important; /* Тёмно-красный фон с приоритетом */
+    color: white !important;
 }
