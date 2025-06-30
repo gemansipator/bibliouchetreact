@@ -51,6 +51,11 @@ function VisitsTable({ theme }) {
         }, 0);
     };
 
+    // Проверка условия для стилизации ячейки в 4-й колонке
+    const shouldApplyWarningStyle = (rowIndex) => {
+        return values.daily[rowIndex][2] === 0 && values.daily[rowIndex][19] > 0;
+    };
+
     // Обработка двойного клика
     const lastClickTime = useRef(0);
     const lastClickedDay = useRef(null);
@@ -230,7 +235,9 @@ function VisitsTable({ theme }) {
                                             min="0"
                                             step="1"
                                             value={values.daily[day - 1][col]}
-                                            className={`table-input ${disabledDays.includes(day - 1) ? 'disabled-input' : ''}`}
+                                            className={`table-input ${disabledDays.includes(day - 1) ? 'disabled-input' : ''} ${
+                                                col === 2 && shouldApplyWarningStyle(day - 1) ? 'warning-blue' : ''
+                                            }`}
                                             data-index={`${day - 1}-${col}`}
                                             readOnly={col === 0}
                                             disabled={disabledDays.includes(day - 1)}
