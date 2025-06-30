@@ -10,7 +10,13 @@ function UsersTable({ theme }) {
         initial: Array(columnCount).fill(0),
         daily: Array.from({ length: 31 }, () => Array(columnCount).fill(0)),
     });
-    const [disabledDays, setDisabledDays] = useState([]); // Список отключённых дней (индексы 0-30)
+    const [disabledDays, setDisabledDays] = useState([]);
+
+    // Функция для вычисления суммы колонки 1 (индекс 0) для строк дней
+    const calculateColumn1 = (rowIndex) => {
+        if (disabledDays.includes(rowIndex)) return 0;
+        return values.daily[rowIndex].slice(6, 18).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
+    };
 
     // Обновление значений при вводе
     const handleInputChange = (row, col, value) => {
@@ -25,6 +31,8 @@ function UsersTable({ theme }) {
                 const newRow = [...newDaily[row]];
                 newRow[col] = newValue;
                 newDaily[row] = newRow;
+                // Пересчитываем колонку 1 для текущей строки
+                newDaily[row][0] = calculateColumn1(row);
                 return { ...prev, daily: newDaily };
             }
         });
@@ -51,7 +59,7 @@ function UsersTable({ theme }) {
         const handleDoubleClick = (e) => {
             const dayCell = e.target.closest('td.day-cell');
             if (dayCell) {
-                const day = parseInt(dayCell.textContent) - 1; // Индекс дня (0-30)
+                const day = parseInt(dayCell.textContent) - 1;
                 const currentTime = Date.now();
                 if (lastClickedDay.current === day && (currentTime - lastClickTime.current) <= 1500) {
                     console.log(`Двойной клик на день ${day + 1}, disabledDays:`, disabledDays);
@@ -75,42 +83,63 @@ function UsersTable({ theme }) {
         };
     }, []);
 
-    // Эффект для обработки ввода и клика
+    // Эффект для обработки ввода и пересчёта колонки 1
     useEffect(() => {
-        const inputs = document.querySelectorAll('.table-input');
-        inputs.forEach(input => {
-            if (!input.readOnly) {
-                input.addEventListener('click', function() {
-                    if (this.value === '0' && !disabledDays.includes(parseInt(this.dataset.index.split('-')[0]))) {
-                        this.value = '';
-                    }
-                });
-                input.addEventListener('input', function(e) {
-                    let value = this.value.trim();
-                    if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
-                        value = value.replace(/^0+/, '');
-                    }
-                    if (value === '') value = '0';
-                    this.value = value;
-                    const [row, col] = this.dataset.index.split('-');
-                    handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), value);
-                });
-                input.addEventListener('blur', function() {
-                    const value = this.value.trim();
-                    if (!/^\d+$/.test(value) || value === '') {
-                        this.value = '0';
-                    }
-                    const [row, col] = this.dataset.index.split('-');
-                    handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), this.value);
-                });
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        this.blur();
-                    }
-                });
+        const inputs = document.querySelectorAll('.table-input:not([readonly]):not([disabled])');
+        const handleClick = function () {
+            if (this.value === '0' && !disabledDays.includes(parseInt(this.dataset.index.split('-')[0]))) {
+                this.value = '';
             }
+        };
+        const handleInput = function (e) {
+            let value = this.value.trim();
+            if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
+                value = value.replace(/^0+/, '');
+            }
+            if (value === '') value = '0';
+            this.value = value;
+            const [row, col] = this.dataset.index.split('-');
+            handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), value);
+        };
+        const handleBlur = function () {
+            const value = this.value.trim();
+            if (!/^\d+$/.test(value) || value === '') {
+                this.value = '0';
+            }
+            const [row, col] = this.dataset.index.split('-');
+            handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), this.value);
+        };
+        const handleKeyDown = function (e) {
+            if (e.key === 'Enter') {
+                this.blur();
+            }
+        };
+
+        inputs.forEach(input => {
+            input.addEventListener('click', handleClick);
+            input.addEventListener('input', handleInput);
+            input.addEventListener('blur', handleBlur);
+            input.addEventListener('keydown', handleKeyDown);
         });
-    }, [disabledDays]);
+
+        // Пересчёт колонки 1 для всех строк при изменении disabledDays или values.daily
+        setValues(prev => {
+            const newDaily = [...prev.daily];
+            newDaily.forEach((row, index) => {
+                row[0] = disabledDays.includes(index) ? 0 : calculateColumn1(index);
+            });
+            return { ...prev, daily: newDaily };
+        });
+
+        return () => {
+            inputs.forEach(input => {
+                input.removeEventListener('click', handleClick);
+                input.removeEventListener('input', handleInput);
+                input.removeEventListener('blur', handleBlur);
+                input.removeEventListener('keydown', handleKeyDown);
+            });
+        };
+    }, [disabledDays, values.daily]);
 
     return (
         <div className={`p-4 ${theme}`}>
@@ -185,6 +214,7 @@ function UsersTable({ theme }) {
                                         defaultValue="0"
                                         className="table-input"
                                         data-index={`initial-${col}`}
+                                        onChange={(e) => handleInputChange('initial', col, e.target.value)}
                                     />
                                 </td>
                             ))}
@@ -198,11 +228,12 @@ function UsersTable({ theme }) {
                                             type="number"
                                             min="0"
                                             step="1"
-                                            value={values.daily[day - 1][col]} // Используем реальные значения
+                                            value={values.daily[day - 1][col]}
                                             className={`table-input ${disabledDays.includes(day - 1) ? 'disabled-input' : ''}`}
                                             data-index={`${day - 1}-${col}`}
+                                            readOnly={col === 0}
                                             disabled={disabledDays.includes(day - 1)}
-                                            onChange={(e) => handleInputChange(day - 1, col, e.target.value)}
+                                            onChange={(e) => col !== 0 && handleInputChange(day - 1, col, e.target.value)}
                                         />
                                     </td>
                                 ))}

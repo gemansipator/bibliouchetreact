@@ -136,6 +136,18 @@
     background: #2d2d2d;
 }
 
+/* Стиль для ячеек 4-й колонки, если значение 0, а в 21-й колонке > 0 */
+.table-input.warning-blue {
+    background: #b3e5fc; /* Светло-синий фон */
+    color: #333;
+}
+
+/* Темная тема для warning-blue */
+.dark-theme .table-input.warning-blue {
+    background: #4fc3f7; /* Более яркий синий для тёмной темы */
+    color: #e0e0e0;
+}
+
 /* Стиль для вертикального текста (поворот на 180 градусов) */
 .rotate {
     writing-mode: vertical-rl;
