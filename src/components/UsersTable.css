@@ -162,22 +162,22 @@
 
 /* Стили для отключённой строки */
 .disabled-row {
-    background-color: #ffebee !important; /* Бледно-красный фон */
+    background-color: #ffebee !important;
     opacity: 0.7 !important;
 }
 .disabled-row td {
-    background-color: #ffebee !important; /* Применяем цвет ко всем ячейкам строки */
+    background-color: #ffebee !important;
     opacity: 0.7 !important;
 }
 
 /* Стили для ячейки дня в отключённой строке */
 .disabled-day {
-    background-color: #b71c1c !important; /* Тёмно-красный фон с приоритетом */
+    background-color: #b71c1c !important;
     color: white !important;
-    opacity: 1 !important; /* Убираем прозрачность для ячейки дня */
+    opacity: 1 !important;
 }
 .users-table .disabled-day {
-    background-color: #b71c1c !important; /* Усиленная специфичность */
+    background-color: #b71c1c !important;
 }
 
 /* Стиль для отключённого поля ввода - визуально показывает 0 */
@@ -190,14 +190,34 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: #b71c1c; /* Цвет нуля совпадает с фоном отключённой ячейки дня */
+    color: #b71c1c;
     font-size: 12px;
-    pointer-events: none; /* Игнорирует клики */
+    pointer-events: none;
     z-index: 1;
 }
 .disabled-input:disabled {
-    color: transparent; /* Скрываем реальное значение */
+    color: transparent;
 }
 .dark-theme .disabled-input::after {
-    color: #ffebee; /* Подходит для тёмной темы */
+    color: #ffebee;
+}
+
+/* Стили для кнопки очистки */
+.clear-button {
+    padding: 8px 16px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.clear-button:hover {
+    background-color: #cc0000;
+}
+.dark-theme .clear-button {
+    background-color: #ff6666;
+}
+.dark-theme .clear-button:hover {
+    background-color: #ff3333;
 }

@@ -1,49 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
+import { TableContext } from '../App';
 import './ServiceTable.css';
 
 function ServiceTable({ theme }) {
+    const { tableData, setTableData, disabledDays, setDisabledDays, clearTableData } = useContext(TableContext);
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const columnCount = 61; // 61 колонка данных + 1 для "Число месяца" = 62 колонки
-
-    const [values, setValues] = useState({
-        initial: Array(columnCount).fill(0),
-        daily: Array.from({ length: 31 }, () => Array(columnCount).fill(0)),
-    });
-    const [disabledDays, setDisabledDays] = useState([]);
+    const columnCount = 61;
 
     const calculateColumn1 = (rowIndex) => {
-        if (disabledDays.includes(rowIndex)) return 0;
-        return values.daily[rowIndex].slice(6, columnCount).reduce((sum, val) => sum + (parseInt(val) || 0), 0); // Сумма с 7-й по 61-ю колонку
+        if (disabledDays.service.includes(rowIndex)) return 0;
+        return tableData.service.daily[rowIndex].slice(6, columnCount).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
     const handleInputChange = (row, col, value) => {
         const newValue = value === '' ? 0 : parseInt(value) || 0;
-        setValues(prev => {
-            if (row === 'initial') {
-                const newInitial = [...prev.initial];
-                newInitial[col] = newValue;
-                return { ...prev, initial: newInitial };
-            } else {
-                const newDaily = [...prev.daily];
-                const newRow = [...newDaily[row]];
-                newRow[col] = newValue;
-                newDaily[row] = newRow;
-                newDaily[row][0] = calculateColumn1(row);
-                return { ...prev, daily: newDaily };
+        setTableData(prev => ({
+            ...prev,
+            service: {
+                ...prev.service,
+                [row === 'initial' ? 'initial' : 'daily']: row === 'initial'
+                    ? [...prev.service.initial].map((v, i) => i === col ? newValue : v)
+                    : prev.service.daily.map((r, i) => i === row ? [...r].map((v, j) => j === col ? newValue : v) : r)
             }
-        });
-    };
-
-    const calculateMonthlyTotal = (col) => {
-        return values.daily.reduce((sum, row, index) => {
-            return disabledDays.includes(index) ? sum : sum + row[col];
-        }, 0);
-    };
-
-    const calculateYearlyTotal = (col) => {
-        return values.initial[col] + values.daily.reduce((sum, row, index) => {
-            return disabledDays.includes(index) ? sum : sum + row[col];
-        }, 0);
+        }));
+        if (row !== 'initial') {
+            setTableData(prev => ({
+                ...prev,
+                service: {
+                    ...prev.service,
+                    daily: prev.service.daily.map((r, i) => i === row ? [...r].map((v, j) => j === 0 ? calculateColumn1(row) : v) : r)
+                }
+            }));
+        }
     };
 
     const lastClickTime = useRef(0);
@@ -56,9 +44,10 @@ function ServiceTable({ theme }) {
                 const day = parseInt(dayCell.textContent) - 1;
                 const currentTime = Date.now();
                 if (lastClickedDay.current === day && (currentTime - lastClickTime.current) <= 1500) {
-                    setDisabledDays(prev =>
-                        prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
-                    );
+                    setDisabledDays(prev => ({
+                        ...prev,
+                        service: prev.service.includes(day) ? prev.service.filter(d => d !== day) : [...prev.service, day]
+                    }));
                 }
                 lastClickTime.current = currentTime;
                 lastClickedDay.current = day;
@@ -79,7 +68,7 @@ function ServiceTable({ theme }) {
     useEffect(() => {
         const inputs = document.querySelectorAll('.table-input:not([readonly]):not([disabled])');
         const handleClick = function () {
-            if (this.value === '0' && !disabledDays.includes(parseInt(this.dataset.index.split('-')[0]))) {
+            if (this.value === '0' && !disabledDays.service.includes(parseInt(this.dataset.index.split('-')[0]))) {
                 this.value = '';
             }
         };
@@ -114,13 +103,13 @@ function ServiceTable({ theme }) {
             input.addEventListener('keydown', handleKeyDown);
         });
 
-        setValues(prev => {
-            const newDaily = [...prev.daily];
-            newDaily.forEach((row, index) => {
-                row[0] = disabledDays.includes(index) ? 0 : calculateColumn1(index);
-            });
-            return { ...prev, daily: newDaily };
-        });
+        setTableData(prev => ({
+            ...prev,
+            service: {
+                ...prev.service,
+                daily: prev.service.daily.map((row, index) => [...row].map((v, j) => j === 0 ? (disabledDays.service.includes(index) ? 0 : calculateColumn1(index)) : v))
+            }
+        }));
 
         return () => {
             inputs.forEach(input => {
@@ -130,11 +119,19 @@ function ServiceTable({ theme }) {
                 input.removeEventListener('keydown', handleKeyDown);
             });
         };
-    }, [disabledDays, values.daily]);
+    }, [disabledDays.service, tableData.service.daily]);
 
     return (
         <div className={`p-4 ${theme}`}>
-            <h2 className="text-2xl font-bold text-center mb-4">Число пользователей библиотеки за [месяц] [год]</h2>
+            <h2 className="text-2xl font-bold text-center mb-4 flex justify-between items-center">
+                Число пользователей библиотеки за [месяц] [год]
+                <button
+                    onClick={() => clearTableData('service')}
+                    className="clear-button"
+                >
+                    Очистить таблицу
+                </button>
+            </h2>
             <div className="table-wrapper">
                 <div className="table-container">
                     <table className="service-table">
@@ -188,7 +185,7 @@ function ServiceTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        defaultValue="0"
+                                        defaultValue={tableData.service.initial[col]}
                                         className="table-input"
                                         data-index={`initial-${col}`}
                                         onChange={(e) => handleInputChange('initial', col, e.target.value)}
@@ -197,19 +194,19 @@ function ServiceTable({ theme }) {
                             ))}
                         </tr>
                         {days.map(day => (
-                            <tr key={day} className={disabledDays.includes(day - 1) ? 'disabled-row' : ''}>
-                                <td className={`sticky-col-1 day-cell ${disabledDays.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
+                            <tr key={day} className={disabledDays.service.includes(day - 1) ? 'disabled-row' : ''}>
+                                <td className={`sticky-col-1 day-cell ${disabledDays.service.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
                                 {Array.from({ length: columnCount }, (_, col) => (
                                     <td key={col} className={col === 0 ? 'sticky-col-2' : ''}>
                                         <input
                                             type="number"
                                             min="0"
                                             step="1"
-                                            value={values.daily[day - 1][col]}
-                                            className={`table-input ${disabledDays.includes(day - 1) ? 'disabled-input' : ''}`}
+                                            value={tableData.service.daily[day - 1][col]}
+                                            className={`table-input ${disabledDays.service.includes(day - 1) ? 'disabled-input' : ''}`}
                                             data-index={`${day - 1}-${col}`}
                                             readOnly={col === 0}
-                                            disabled={disabledDays.includes(day - 1)}
+                                            disabled={disabledDays.service.includes(day - 1)}
                                             onChange={(e) => col !== 0 && handleInputChange(day - 1, col, e.target.value)}
                                         />
                                     </td>
@@ -224,7 +221,7 @@ function ServiceTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        value={calculateMonthlyTotal(col)}
+                                        value={tableData.service.daily.reduce((sum, row, index) => disabledDays.service.includes(index) ? sum : sum + row[col], 0)}
                                         className="table-input"
                                         readOnly
                                     />
@@ -239,7 +236,7 @@ function ServiceTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        value={calculateYearlyTotal(col)}
+                                        value={tableData.service.initial[col] + tableData.service.daily.reduce((sum, row, index) => disabledDays.service.includes(index) ? sum : sum + row[col], 0)}
                                         className="table-input"
                                         readOnly
                                     />

@@ -178,7 +178,7 @@
     left: 0;
     z-index: 5;
     background: #e0e0e0;
-    border-right: 1px solid #444; /* Добавлена правая граница */
+    border-right: 1px solid #444;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -187,12 +187,32 @@
     left: 60px;
     z-index: 4;
     background: #e0e0e0;
-    border-right: 1px solid #444; /* Добавлена правая граница */
+    border-right: 1px solid #444;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .dark-theme .sticky-col-1,
 .dark-theme .sticky-col-2 {
     background: #2a2a2a;
-    border-right: 1px solid #555; /* Граница для темной темы */
+    border-right: 1px solid #555;
+}
+
+/* Стили для кнопки очистки */
+.clear-button {
+    padding: 8px 16px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.clear-button:hover {
+    background-color: #cc0000;
+}
+.dark-theme .clear-button {
+    background-color: #ff6666;
+}
+.dark-theme .clear-button:hover {
+    background-color: #ff3333;
 }
