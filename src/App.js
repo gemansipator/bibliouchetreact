@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UsersTable from './components/UsersTable';
 import VisitsTable from './components/VisitsTable';
+import ServiceTable from './components/ServiceTable';
 import './App.css';
 
 function App() {
@@ -44,10 +45,16 @@ function App() {
                 >
                     Посещения
                 </button>
+                <button
+                    onClick={() => setActiveTab('service')}
+                    className={`nav-button ${activeTab === 'service' ? 'active' : ''}`}
+                >
+                    Обслуживание
+                </button>
             </nav>
 
             <main className="app-main">
-                {activeTab === 'users' ? <UsersTable theme={theme} /> : <VisitsTable theme={theme} />}
+                {activeTab === 'users' ? <UsersTable theme={theme} /> : activeTab === 'visits' ? <VisitsTable theme={theme} /> : <ServiceTable theme={theme} />}
             </main>
         </div>
     );
