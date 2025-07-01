@@ -3,7 +3,7 @@ import './ServiceTable.css';
 
 function ServiceTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const columnCount = 62;
+    const columnCount = 61; // 61 колонка данных + 1 для "Число месяца" = 62 колонки
 
     const [values, setValues] = useState({
         initial: Array(columnCount).fill(0),
@@ -13,7 +13,7 @@ function ServiceTable({ theme }) {
 
     const calculateColumn1 = (rowIndex) => {
         if (disabledDays.includes(rowIndex)) return 0;
-        return values.daily[rowIndex].slice(6, 18).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
+        return values.daily[rowIndex].slice(6, columnCount).reduce((sum, val) => sum + (parseInt(val) || 0), 0); // Сумма с 7-й по 61-ю колонку
     };
 
     const handleInputChange = (row, col, value) => {
@@ -142,7 +142,7 @@ function ServiceTable({ theme }) {
                         <tr className="header">
                             <th className="sticky-col-1" rowSpan="3">Число месяца</th>
                             <th className="sticky-col-2" colSpan="6">Число зарегистрированных пользователей библиотеки</th>
-                            <th colSpan="56">Отдельные группы пользователей</th>
+                            <th colSpan="55">Отдельные группы пользователей</th>
                         </tr>
                         <tr className="header">
                             <th className="sticky-col-2" rowSpan="2">Всего</th>
@@ -163,7 +163,7 @@ function ServiceTable({ theme }) {
                             <th rowSpan="2">11 кл.</th>
                             <th rowSpan="2">РДЧ</th>
                             <th rowSpan="2">Инвалиды</th>
-                            {Array.from({ length: 42 }, (_, i) => (
+                            {Array.from({ length: 41 }, (_, i) => (
                                 <th key={`extra-${i}`} rowSpan="2">{`Доп. ${i + 1}`}</th>
                             ))}
                         </tr>
