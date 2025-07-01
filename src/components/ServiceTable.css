@@ -52,6 +52,7 @@
     max-width: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 60px; /* Фиксированная ширина для всех ячеек */
 }
 
 .dark-theme .service-table td,
@@ -178,8 +179,11 @@
     left: 0;
     z-index: 5;
     background: #e0e0e0;
-    border-right: 1px solid #444; /* Добавлена правая граница */
+    border-right: 1px solid #444;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    width: 60px; /* Фиксированная ширина */
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .sticky-col-2 {
@@ -187,12 +191,15 @@
     left: 60px;
     z-index: 4;
     background: #e0e0e0;
-    border-right: 1px solid #444; /* Добавлена правая граница */
+    border-right: 1px solid #444;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    width: 60px; /* Фиксированная ширина */
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .dark-theme .sticky-col-1,
 .dark-theme .sticky-col-2 {
     background: #2a2a2a;
-    border-right: 1px solid #555; /* Граница для темной темы */
+    border-right: 1px solid #555;
 }
