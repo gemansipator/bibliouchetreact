@@ -1,24 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './UsersTable.css';
+import './ServiceTable.css';
 
-function UsersTable({ theme }) {
+function ServiceTable({ theme }) {
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const columnCount = 20; // Количество столбцов
+    const columnCount = 62;
 
-    // Состояние для хранения значений и отключённых дней
     const [values, setValues] = useState({
         initial: Array(columnCount).fill(0),
         daily: Array.from({ length: 31 }, () => Array(columnCount).fill(0)),
     });
     const [disabledDays, setDisabledDays] = useState([]);
 
-    // Функция для вычисления суммы колонки 1 (индекс 0) для строк дней
     const calculateColumn1 = (rowIndex) => {
         if (disabledDays.includes(rowIndex)) return 0;
         return values.daily[rowIndex].slice(6, 18).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
-    // Обновление значений при вводе
     const handleInputChange = (row, col, value) => {
         const newValue = value === '' ? 0 : parseInt(value) || 0;
         setValues(prev => {
@@ -31,14 +28,12 @@ function UsersTable({ theme }) {
                 const newRow = [...newDaily[row]];
                 newRow[col] = newValue;
                 newDaily[row] = newRow;
-                // Пересчитываем колонку 1 для текущей строки
                 newDaily[row][0] = calculateColumn1(row);
                 return { ...prev, daily: newDaily };
             }
         });
     };
 
-    // Вычисления с учётом отключённых дней
     const calculateMonthlyTotal = (col) => {
         return values.daily.reduce((sum, row, index) => {
             return disabledDays.includes(index) ? sum : sum + row[col];
@@ -51,7 +46,6 @@ function UsersTable({ theme }) {
         }, 0);
     };
 
-    // Обработка двойного клика
     const lastClickTime = useRef(0);
     const lastClickedDay = useRef(null);
 
@@ -62,7 +56,6 @@ function UsersTable({ theme }) {
                 const day = parseInt(dayCell.textContent) - 1;
                 const currentTime = Date.now();
                 if (lastClickedDay.current === day && (currentTime - lastClickTime.current) <= 1500) {
-                    console.log(`Двойной клик на день ${day + 1}, disabledDays:`, disabledDays);
                     setDisabledDays(prev =>
                         prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
                     );
@@ -83,7 +76,6 @@ function UsersTable({ theme }) {
         };
     }, []);
 
-    // Эффект для обработки ввода и пересчёта колонки 1
     useEffect(() => {
         const inputs = document.querySelectorAll('.table-input:not([readonly]):not([disabled])');
         const handleClick = function () {
@@ -122,7 +114,6 @@ function UsersTable({ theme }) {
             input.addEventListener('keydown', handleKeyDown);
         });
 
-        // Пересчёт колонки 1 для всех строк при изменении disabledDays или values.daily
         setValues(prev => {
             const newDaily = [...prev.daily];
             newDaily.forEach((row, index) => {
@@ -146,15 +137,15 @@ function UsersTable({ theme }) {
             <h2 className="text-2xl font-bold text-center mb-4">Число пользователей библиотеки за [месяц] [год]</h2>
             <div className="table-wrapper">
                 <div className="table-container">
-                    <table className="users-table">
+                    <table className="service-table">
                         <thead className="sticky-header">
                         <tr className="header">
-                            <th rowSpan="3">Число месяца</th>
-                            <th colSpan="6">Число зарегистрированных пользователей библиотеки</th>
-                            <th colSpan="14">Отдельные группы пользователей</th>
+                            <th className="sticky-col-1" rowSpan="3">Число месяца</th>
+                            <th className="sticky-col-2" colSpan="6">Число зарегистрированных пользователей библиотеки</th>
+                            <th colSpan="56">Отдельные группы пользователей</th>
                         </tr>
                         <tr className="header">
-                            <th rowSpan="2">Всего</th>
+                            <th className="sticky-col-2" rowSpan="2">Всего</th>
                             <th colSpan="3">В т.ч. пользователей в стенах библиотеки</th>
                             <th rowSpan="2">В т.ч. обслуженных во внестационарных условиях</th>
                             <th rowSpan="2">в т.ч. удалённых пользователей (из гр.2)</th>
@@ -172,6 +163,9 @@ function UsersTable({ theme }) {
                             <th rowSpan="2">11 кл.</th>
                             <th rowSpan="2">РДЧ</th>
                             <th rowSpan="2">Инвалиды</th>
+                            {Array.from({ length: 42 }, (_, i) => (
+                                <th key={`extra-${i}`} rowSpan="2">{`Доп. ${i + 1}`}</th>
+                            ))}
                         </tr>
                         <tr className="header">
                             <th>Всего</th>
@@ -179,34 +173,17 @@ function UsersTable({ theme }) {
                             <th>В т.ч. РДЧ (из гр.3)</th>
                         </tr>
                         <tr className="header">
-                            <th>1</th>
-                            <th>2</th>
-                            <th>3</th>
-                            <th>4</th>
-                            <th>5</th>
-                            <th>6</th>
-                            <th>7</th>
-                            <th>8</th>
-                            <th>9</th>
-                            <th>10</th>
-                            <th>11</th>
-                            <th>12</th>
-                            <th>13</th>
-                            <th>14</th>
-                            <th>15</th>
-                            <th>16</th>
-                            <th>17</th>
-                            <th>18</th>
-                            <th>19</th>
-                            <th>20</th>
-                            <th>21</th>
+                            <th className="sticky-col-1">1</th>
+                            {Array.from({ length: columnCount }, (_, i) => (
+                                <th key={i} className={i === 0 ? 'sticky-col-2' : ''}>{i + 2}</th>
+                            ))}
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td className="day-cell">Состоит к началу месяца</td>
+                            <td className="sticky-col-1 day-cell">Состоит к началу месяца</td>
                             {Array.from({ length: columnCount }, (_, col) => (
-                                <td key={col}>
+                                <td key={col} className={col === 0 ? 'sticky-col-2' : ''}>
                                     <input
                                         type="number"
                                         min="0"
@@ -221,9 +198,9 @@ function UsersTable({ theme }) {
                         </tr>
                         {days.map(day => (
                             <tr key={day} className={disabledDays.includes(day - 1) ? 'disabled-row' : ''}>
-                                <td className={`day-cell ${disabledDays.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
+                                <td className={`sticky-col-1 day-cell ${disabledDays.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
                                 {Array.from({ length: columnCount }, (_, col) => (
-                                    <td key={col}>
+                                    <td key={col} className={col === 0 ? 'sticky-col-2' : ''}>
                                         <input
                                             type="number"
                                             min="0"
@@ -240,9 +217,9 @@ function UsersTable({ theme }) {
                             </tr>
                         ))}
                         <tr>
-                            <td className="day-cell">Всего за месяц</td>
+                            <td className="sticky-col-1 day-cell">Всего за месяц</td>
                             {Array.from({ length: columnCount }, (_, col) => (
-                                <td key={col}>
+                                <td key={col} className={col === 0 ? 'sticky-col-2' : ''}>
                                     <input
                                         type="number"
                                         min="0"
@@ -255,9 +232,9 @@ function UsersTable({ theme }) {
                             ))}
                         </tr>
                         <tr>
-                            <td className="day-cell">Итого с начала года</td>
+                            <td className="sticky-col-1 day-cell">Итого с начала года</td>
                             {Array.from({ length: columnCount }, (_, col) => (
-                                <td key={col}>
+                                <td key={col} className={col === 0 ? 'sticky-col-2' : ''}>
                                     <input
                                         type="number"
                                         min="0"
@@ -277,4 +254,4 @@ function UsersTable({ theme }) {
     );
 }
 
-export default UsersTable;
+export default ServiceTable;
