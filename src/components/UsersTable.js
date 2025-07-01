@@ -1,57 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
+import { TableContext } from '../App';
 import './UsersTable.css';
 
 function UsersTable({ theme }) {
+    const { tableData, setTableData, disabledDays, setDisabledDays, clearTableData } = useContext(TableContext);
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const columnCount = 20; // Количество столбцов
+    const columnCount = 20;
 
-    // Состояние для хранения значений и отключённых дней
-    const [values, setValues] = useState({
-        initial: Array(columnCount).fill(0),
-        daily: Array.from({ length: 31 }, () => Array(columnCount).fill(0)),
-    });
-    const [disabledDays, setDisabledDays] = useState([]);
-
-    // Функция для вычисления суммы колонки 1 (индекс 0) для строк дней
     const calculateColumn1 = (rowIndex) => {
-        if (disabledDays.includes(rowIndex)) return 0;
-        return values.daily[rowIndex].slice(6, 18).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
+        if (disabledDays.users.includes(rowIndex)) return 0;
+        return tableData.users.daily[rowIndex].slice(6, 18).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
-    // Обновление значений при вводе
     const handleInputChange = (row, col, value) => {
         const newValue = value === '' ? 0 : parseInt(value) || 0;
-        setValues(prev => {
-            if (row === 'initial') {
-                const newInitial = [...prev.initial];
-                newInitial[col] = newValue;
-                return { ...prev, initial: newInitial };
-            } else {
-                const newDaily = [...prev.daily];
-                const newRow = [...newDaily[row]];
-                newRow[col] = newValue;
-                newDaily[row] = newRow;
-                // Пересчитываем колонку 1 для текущей строки
-                newDaily[row][0] = calculateColumn1(row);
-                return { ...prev, daily: newDaily };
+        setTableData(prev => ({
+            ...prev,
+            users: {
+                ...prev.users,
+                [row === 'initial' ? 'initial' : 'daily']: row === 'initial'
+                    ? [...prev.users.initial].map((v, i) => i === col ? newValue : v)
+                    : prev.users.daily.map((r, i) => i === row ? [...r].map((v, j) => j === col ? newValue : v) : r)
             }
-        });
+        }));
+        if (row !== 'initial') {
+            setTableData(prev => ({
+                ...prev,
+                users: {
+                    ...prev.users,
+                    daily: prev.users.daily.map((r, i) => i === row ? [...r].map((v, j) => j === 0 ? calculateColumn1(row) : v) : r)
+                }
+            }));
+        }
     };
 
-    // Вычисления с учётом отключённых дней
-    const calculateMonthlyTotal = (col) => {
-        return values.daily.reduce((sum, row, index) => {
-            return disabledDays.includes(index) ? sum : sum + row[col];
-        }, 0);
-    };
-
-    const calculateYearlyTotal = (col) => {
-        return values.initial[col] + values.daily.reduce((sum, row, index) => {
-            return disabledDays.includes(index) ? sum : sum + row[col];
-        }, 0);
-    };
-
-    // Обработка двойного клика
     const lastClickTime = useRef(0);
     const lastClickedDay = useRef(null);
 
@@ -62,10 +44,10 @@ function UsersTable({ theme }) {
                 const day = parseInt(dayCell.textContent) - 1;
                 const currentTime = Date.now();
                 if (lastClickedDay.current === day && (currentTime - lastClickTime.current) <= 1500) {
-                    console.log(`Двойной клик на день ${day + 1}, disabledDays:`, disabledDays);
-                    setDisabledDays(prev =>
-                        prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
-                    );
+                    setDisabledDays(prev => ({
+                        ...prev,
+                        users: prev.users.includes(day) ? prev.users.filter(d => d !== day) : [...prev.users, day]
+                    }));
                 }
                 lastClickTime.current = currentTime;
                 lastClickedDay.current = day;
@@ -83,11 +65,10 @@ function UsersTable({ theme }) {
         };
     }, []);
 
-    // Эффект для обработки ввода и пересчёта колонки 1
     useEffect(() => {
         const inputs = document.querySelectorAll('.table-input:not([readonly]):not([disabled])');
         const handleClick = function () {
-            if (this.value === '0' && !disabledDays.includes(parseInt(this.dataset.index.split('-')[0]))) {
+            if (this.value === '0' && !disabledDays.users.includes(parseInt(this.dataset.index.split('-')[0]))) {
                 this.value = '';
             }
         };
@@ -122,14 +103,13 @@ function UsersTable({ theme }) {
             input.addEventListener('keydown', handleKeyDown);
         });
 
-        // Пересчёт колонки 1 для всех строк при изменении disabledDays или values.daily
-        setValues(prev => {
-            const newDaily = [...prev.daily];
-            newDaily.forEach((row, index) => {
-                row[0] = disabledDays.includes(index) ? 0 : calculateColumn1(index);
-            });
-            return { ...prev, daily: newDaily };
-        });
+        setTableData(prev => ({
+            ...prev,
+            users: {
+                ...prev.users,
+                daily: prev.users.daily.map((row, index) => [...row].map((v, j) => j === 0 ? (disabledDays.users.includes(index) ? 0 : calculateColumn1(index)) : v))
+            }
+        }));
 
         return () => {
             inputs.forEach(input => {
@@ -139,11 +119,19 @@ function UsersTable({ theme }) {
                 input.removeEventListener('keydown', handleKeyDown);
             });
         };
-    }, [disabledDays, values.daily]);
+    }, [disabledDays.users, tableData.users.daily]);
 
     return (
         <div className={`p-4 ${theme}`}>
-            <h2 className="text-2xl font-bold text-center mb-4">Число пользователей библиотеки за [месяц] [год]</h2>
+            <h2 className="text-2xl font-bold text-center mb-4 flex justify-between items-center">
+                Число пользователей библиотеки за [месяц] [год]
+                <button
+                    onClick={() => clearTableData('users')}
+                    className="clear-button"
+                >
+                    Очистить таблицу
+                </button>
+            </h2>
             <div className="table-wrapper">
                 <div className="table-container">
                     <table className="users-table">
@@ -211,7 +199,7 @@ function UsersTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        defaultValue="0"
+                                        defaultValue={tableData.users.initial[col]}
                                         className="table-input"
                                         data-index={`initial-${col}`}
                                         onChange={(e) => handleInputChange('initial', col, e.target.value)}
@@ -220,19 +208,19 @@ function UsersTable({ theme }) {
                             ))}
                         </tr>
                         {days.map(day => (
-                            <tr key={day} className={disabledDays.includes(day - 1) ? 'disabled-row' : ''}>
-                                <td className={`day-cell ${disabledDays.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
+                            <tr key={day} className={disabledDays.users.includes(day - 1) ? 'disabled-row' : ''}>
+                                <td className={`day-cell ${disabledDays.users.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
                                 {Array.from({ length: columnCount }, (_, col) => (
                                     <td key={col}>
                                         <input
                                             type="number"
                                             min="0"
                                             step="1"
-                                            value={values.daily[day - 1][col]}
-                                            className={`table-input ${disabledDays.includes(day - 1) ? 'disabled-input' : ''}`}
+                                            value={tableData.users.daily[day - 1][col]}
+                                            className={`table-input ${disabledDays.users.includes(day - 1) ? 'disabled-input' : ''}`}
                                             data-index={`${day - 1}-${col}`}
                                             readOnly={col === 0}
-                                            disabled={disabledDays.includes(day - 1)}
+                                            disabled={disabledDays.users.includes(day - 1)}
                                             onChange={(e) => col !== 0 && handleInputChange(day - 1, col, e.target.value)}
                                         />
                                     </td>
@@ -247,7 +235,7 @@ function UsersTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        value={calculateMonthlyTotal(col)}
+                                        value={tableData.users.daily.reduce((sum, row, index) => disabledDays.users.includes(index) ? sum : sum + row[col], 0)}
                                         className="table-input"
                                         readOnly
                                     />
@@ -262,7 +250,7 @@ function UsersTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        value={calculateYearlyTotal(col)}
+                                        value={tableData.users.initial[col] + tableData.users.daily.reduce((sum, row, index) => disabledDays.users.includes(index) ? sum : sum + row[col], 0)}
                                         className="table-input"
                                         readOnly
                                     />
