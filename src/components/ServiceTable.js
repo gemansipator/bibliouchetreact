@@ -20,7 +20,7 @@ function ServiceTable({ theme }) {
     // Создаем массив дней месяца (1-31)
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
     // Количество колонок в таблице
-    const columnCount = 62;
+    const columnCount = 63;
 
     /**
      * Вычисляет сумму значений для первой колонки (итого за день)
@@ -31,7 +31,7 @@ function ServiceTable({ theme }) {
         // Если день отключен, возвращаем 0
         if (disabledDays.service.includes(rowIndex)) return 0;
         // Суммируем значения с 25 по 35 колонку
-        return tableData.service.daily[rowIndex].slice(23, 36).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
+        return tableData.service.daily[rowIndex].slice(24, 36).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
     /**
@@ -340,8 +340,8 @@ function ServiceTable({ theme }) {
                             <th>22</th>
                             <th>23</th>
                             <th>24</th>
-                            <th>25</th>
-                            <th>25</th>
+                            <th>25 (1)</th>
+                            <th>25 (2)</th>
                             <th>26</th>
                             <th>27</th>
                             <th>28</th>
