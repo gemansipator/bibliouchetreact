@@ -13,18 +13,18 @@ function App() {
         const defaultData = {
             users: { initial: Array(20).fill(0), daily: Array.from({ length: 31 }, () => Array(20).fill(0)) },
             visits: { initial: Array(21).fill(0), daily: Array.from({ length: 31 }, () => Array(21).fill(0)) },
-            service: { initial: Array(62).fill(0), daily: Array.from({ length: 31 }, () => Array(62).fill(0)) },
+            service: { initial: Array(63).fill(0), daily: Array.from({ length: 31 }, () => Array(63).fill(0)) },
         };
 
         const storedService = JSON.parse(localStorage.getItem('tableData_service'));
         if (storedService) {
-            const initial = Array.isArray(storedService.initial) && storedService.initial.length === 62
+            const initial = Array.isArray(storedService.initial) && storedService.initial.length === 63
                 ? storedService.initial.map(v => Number(v) || 0)
-                : Array(62).fill(0);
+                : Array(63).fill(0);
             const daily = Array.isArray(storedService.daily) && storedService.daily.length === 31 &&
-            storedService.daily.every(row => Array.isArray(row) && row.length === 62)
+            storedService.daily.every(row => Array.isArray(row) && row.length === 63)
                 ? storedService.daily.map(row => row.map(v => Number(v) || 0))
-                : Array.from({ length: 31 }, () => Array(62).fill(0));
+                : Array.from({ length: 31 }, () => Array(63).fill(0));
 
             return {
                 ...defaultData,
@@ -60,7 +60,7 @@ function App() {
             ...prev,
             [tableName]: {
                 ...prev[tableName], // Сохраняем initial
-                daily: Array.from({ length: 31 }, () => Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 62).fill(0)) // Сбрасываем только daily
+                daily: Array.from({ length: 31 }, () => Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 63).fill(0)) // Сбрасываем только daily
             }
         }));
         setDisabledDays(prev => ({
