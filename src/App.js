@@ -9,10 +9,29 @@ export const TableContext = createContext();
 function App() {
     const [activeTab, setActiveTab] = useState(() => localStorage.getItem('activeTab') || 'users');
     const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light-theme');
-    const [tableData, setTableData] = useState({
-        users: JSON.parse(localStorage.getItem('tableData_users')) || { initial: Array(20).fill(0), daily: Array.from({ length: 31 }, () => Array(20).fill(0)) },
-        visits: JSON.parse(localStorage.getItem('tableData_visits')) || { initial: Array(21).fill(0), daily: Array.from({ length: 31 }, () => Array(21).fill(0)) },
-        service: JSON.parse(localStorage.getItem('tableData_service')) || { initial: Array(62).fill(0), daily: Array.from({ length: 31 }, () => Array(62).fill(0)) },
+    const [tableData, setTableData] = useState(() => {
+        const defaultData = {
+            users: { initial: Array(20).fill(0), daily: Array.from({ length: 31 }, () => Array(20).fill(0)) },
+            visits: { initial: Array(21).fill(0), daily: Array.from({ length: 31 }, () => Array(21).fill(0)) },
+            service: { initial: Array(62).fill(0), daily: Array.from({ length: 31 }, () => Array(62).fill(0)) },
+        };
+
+        const storedService = JSON.parse(localStorage.getItem('tableData_service'));
+        if (storedService) {
+            const initial = Array.isArray(storedService.initial) && storedService.initial.length === 62
+                ? storedService.initial.map(v => Number(v) || 0)
+                : Array(62).fill(0);
+            const daily = Array.isArray(storedService.daily) && storedService.daily.length === 31 &&
+            storedService.daily.every(row => Array.isArray(row) && row.length === 62)
+                ? storedService.daily.map(row => row.map(v => Number(v) || 0))
+                : Array.from({ length: 31 }, () => Array(62).fill(0));
+
+            return {
+                ...defaultData,
+                service: { initial, daily },
+            };
+        }
+        return defaultData;
     });
     const [disabledDays, setDisabledDays] = useState({
         users: JSON.parse(localStorage.getItem('disabledDays_users')) || [],
@@ -40,13 +59,13 @@ function App() {
         setTableData(prev => ({
             ...prev,
             [tableName]: {
-                initial: Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 62).fill(0),
-                daily: Array.from({ length: 31 }, () => Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 62).fill(0))
+                ...prev[tableName], // Сохраняем initial
+                daily: Array.from({ length: 31 }, () => Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 62).fill(0)) // Сбрасываем только daily
             }
         }));
         setDisabledDays(prev => ({
             ...prev,
-            [tableName]: []
+            [tableName]: [] // Очищаем отключённые дни
         }));
     };
 
