@@ -204,23 +204,47 @@ function ServiceTable({ theme }) {
                         {/* Новый уровень заголовка */}
                         <tr className="header">
                             <th className="sticky-col-1"></th>
-                            {/*<th className="sticky-col-2" colSpan="3"></th> /!* Пустая ячейка 3–5 *!/*/}
                             <th colSpan="4"></th>
                             <th colSpan="2"></th>
-                            <th colSpan="18">Выдано (просмотрено) документов из фондов библиотеки</th>             {/* 9–15 */}
-                            <th colSpan="5">Пример 3 блок</th>             {/* 16–20 */}
-                            <th colSpan="44">Остальные</th>                {/* 21–62 */}
+                            <th colSpan="18">Выдано (просмотрено) документов из фондов библиотеки</th>
+                            <th colSpan="13">В том числе выдано: распределение литературы по содержанию</th>
+                            <th colSpan="3">Выдано документов в стационаном режиме</th>
+                            <th colSpan="4">Причины спроса</th>
+                            <th colSpan="9">Выдано (просмотрено) документов из фондов других библиотек</th>
+                            <th colSpan="5">Изготовлено для пользователей и выдано копий, единиц</th>
+                            <th colSpan="5">Выполнено справок и консультаций, единиц</th>
                         </tr>
                         <tr className="header">
                             <th className="sticky-col-1" rowSpan="3">Число месяца</th>
                             <th className="sticky-col-3" colSpan="1"></th>
                             <th className="sticky-col-3" colSpan="3">В стационарном режиме</th>
                             <th className="sticky-col-3" colSpan="2"></th>
-                            <th className="sticky-col-3" colSpan="3">В стационарном режиме</th>
-                            <th colSpan="58">Отдельные группы пользователей</th>
+                            <th className="sticky-col-3" colSpan="5">В т. ч. из фонда на физических носителях (из гр.
+                                2)
+                            </th>
+                            <th className="sticky-col-3" colSpan="5">В т. ч. из электронной (цифровой) библиотеки (из
+                                гр. 2)
+                            </th>
+                            <th className="sticky-col-3" colSpan="3">В т. ч. инсталлир. документов (из гр. 2)</th>
+                            <th className="sticky-col-3" colSpan="5">В т. ч. сетевых удал. лицензион. док. (из гр. 2)
+                            </th>
+                            <th className="sticky-col-3" colSpan="4"></th>
+                            <th colSpan="3">Социальные гуманитарные науки</th>
+                            <th colSpan="6"></th>
+                            <th colSpan="3"></th>
+                            <th colSpan="4"></th>
+                            <th colSpan="3"></th>
+                            <th colSpan="3">В т.ч. полученных по системе МБА и ММБА (из гр. 43)</th>
+                            <th colSpan="3">Доступных в виртуальных читальных залах (из гр. 43)</th>
+                            <th colSpan="1"></th>
+                            <th colSpan="3">В стационарном режиме</th>
+                            <th colSpan="1"></th>
+                            <th colSpan="1"></th>
+                            <th colSpan="3">В стационарном режиме</th>
+                            <th colSpan="1"></th>
                         </tr>
                         <tr className="header">
-                        <th className="sticky-col-2" rowSpan="2">Всего</th>
+                            <th className="sticky-col-2" rowSpan="2">Всего</th>
                             <th colSpan="3">В том числе</th>
                             <th rowSpan="2">В т.ч. обслуженных во внестационарных условиях</th>
                             <th rowSpan="2">в т.ч. удалённых пользователей (из гр.2)</th>
@@ -241,6 +265,7 @@ function ServiceTable({ theme }) {
                             <th rowSpan="2">Доп</th>
                             <th rowSpan="2">Доп</th>
                             <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
                             <th rowSpan="2">Естеств. науки (2)</th>
                             <th rowSpan="2">Техника (3)</th>
                             <th rowSpan="2">Сельское и лесное хозяйство (4)</th>
@@ -252,34 +277,34 @@ function ServiceTable({ theme }) {
                             <th rowSpan="2">Филогические науки (80, 81, 82, 83)</th>
                             <th rowSpan="2">Худ. литература (84)</th>
                             <th rowSpan="2">Искусство (85)</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп2</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
-                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Религия, философия, психология (86, 87, 88)</th>
+                            <th rowSpan="2">Литература универсального содержания (9)</th>
+                            <th rowSpan="2">Дошкольникам</th>
+                            <th rowSpan="2">Инвалидам</th>
+                            <th rowSpan="2">РДЧ</th>
+                            <th rowSpan="2">В помощь шк. программам</th>
+                            <th rowSpan="2">Личный интерес</th>
+                            <th rowSpan="2">Книжные выставки</th>
+                            <th rowSpan="2">Рекомендации библиотекаря</th>
+                            <th rowSpan="2">В стационарном режиме</th>
+                            <th rowSpan="2">В т.ч. детям до 14 лет</th>
+                            <th rowSpan="2">В т.ч. РДЧ</th>
+                            <th rowSpan="2">В стационарном режиме</th>
+                            <th rowSpan="2">В т.ч. детям до 14 лет включительно</th>
+                            <th rowSpan="2">В т.ч. РДЧ</th>
+                            <th rowSpan="2">В стационарном режиме</th>
+                            <th rowSpan="2">В т.ч. детям до 14 лет включительно</th>
+                            <th rowSpan="2">В т.ч. РДЧ</th>
+                            <th rowSpan="2">Всего</th>
+                            <th rowSpan="2">Всего</th>
+                            <th rowSpan="2">В т.ч. детям до 14 лет включительно</th>
+                            <th rowSpan="2">В т.ч. РДЧ</th>
+                            <th rowSpan="2">В удаленном режиме</th>
+                            <th rowSpan="2">Всего</th>
+                            <th rowSpan="2">Всего</th>
+                            <th rowSpan="2">В т.ч. детям до 14 лет включительно</th>
+                            <th rowSpan="2">В т.ч. РДЧ</th>
+                            <th rowSpan="2">В удаленном режиме</th>
 
                         </tr>
                         <tr className="header">
@@ -315,6 +340,7 @@ function ServiceTable({ theme }) {
                             <th>22</th>
                             <th>23</th>
                             <th>24</th>
+                            <th>25</th>
                             <th>25</th>
                             <th>26</th>
                             <th>27</th>
