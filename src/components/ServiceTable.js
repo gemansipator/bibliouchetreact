@@ -30,8 +30,8 @@ function ServiceTable({ theme }) {
     const calculateColumn1 = (rowIndex) => {
         // Если день отключен, возвращаем 0
         if (disabledDays.service.includes(rowIndex)) return 0;
-        // Суммируем значения с 25 по 35 колонку (индексы 25-35)
-        return tableData.service.daily[rowIndex].slice(25, 36).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
+        // Суммируем значения с 25 по 35 колонку
+        return tableData.service.daily[rowIndex].slice(23, 36).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
     /**
