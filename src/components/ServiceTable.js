@@ -2,27 +2,61 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { TableContext } from '../App';
 import './ServiceTable.css';
 
+/**
+ * Компонент таблицы для учета библиотечно-информационного обслуживания пользователей
+ * @param {Object} props - Свойства компонента
+ * @param {string} props.theme - Тема оформления (светлая/темная)
+ */
 function ServiceTable({ theme }) {
-    const { tableData, setTableData, disabledDays, setDisabledDays, clearTableData } = useContext(TableContext);
+    // Получаем данные и методы из контекста таблицы
+    const {
+        tableData,         // Данные таблицы
+        setTableData,      // Функция обновления данных таблицы
+        disabledDays,      // Массив отключенных дней
+        setDisabledDays,   // Функция обновления отключенных дней
+        clearTableData     // Функция очистки данных таблицы
+    } = useContext(TableContext);
+
+    // Создаем массив дней месяца (1-31)
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
+    // Количество колонок в таблице
     const columnCount = 62;
 
+    /**
+     * Вычисляет сумму значений для первой колонки (итого за день)
+     * @param {number} rowIndex - Индекс строки (день месяца)
+     * @returns {number} Сумма значений с 25 по 35 колонку
+     */
     const calculateColumn1 = (rowIndex) => {
+        // Если день отключен, возвращаем 0
         if (disabledDays.service.includes(rowIndex)) return 0;
-        return tableData.service.daily[rowIndex].slice(6, columnCount).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
+        // Суммируем значения с 25 по 35 колонку (индексы 25-35)
+        return tableData.service.daily[rowIndex].slice(25, 36).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
+    /**
+     * Обрабатывает изменение значения в ячейке таблицы
+     * @param {string|number} row - Индекс строки ('initial' для начальных данных или номер дня)
+     * @param {number} col - Индекс колонки
+     * @param {string} value - Новое значение
+     */
     const handleInputChange = (row, col, value) => {
+        // Преобразуем значение в число (0 если пустая строка или не число)
         const newValue = value === '' ? 0 : parseInt(value) || 0;
+
+        // Обновляем состояние таблицы
         setTableData(prev => ({
             ...prev,
             service: {
                 ...prev.service,
+                // Обновляем либо начальные данные, либо ежедневные
                 [row === 'initial' ? 'initial' : 'daily']: row === 'initial'
                     ? [...prev.service.initial].map((v, i) => i === col ? newValue : v)
                     : prev.service.daily.map((r, i) => i === row ? [...r].map((v, j) => j === col ? newValue : v) : r)
             }
         }));
+
+        // Если изменяем не начальные данные, пересчитываем первую колонку
         if (row !== 'initial') {
             setTableData(prev => ({
                 ...prev,
@@ -34,30 +68,41 @@ function ServiceTable({ theme }) {
         }
     };
 
-    const lastClickTime = useRef(0);
-    const lastClickedDay = useRef(null);
+    // Референсы для обработки двойного клика
+    const lastClickTime = useRef(0);      // Время последнего клика
+    const lastClickedDay = useRef(null);  // Последний кликнутый день
 
+    // Эффект для обработки двойного клика по дню (отключение/включение дня)
     useEffect(() => {
         const handleDoubleClick = (e) => {
             const dayCell = e.target.closest('td.day-cell');
             if (dayCell) {
-                const day = parseInt(dayCell.textContent) - 1;
+                const day = parseInt(dayCell.textContent) - 1; // Получаем номер дня (0-30)
                 const currentTime = Date.now();
+
+                // Проверяем был ли это двойной клик по тому же дню
                 if (lastClickedDay.current === day && (currentTime - lastClickTime.current) <= 1500) {
+                    // Переключаем состояние дня (отключен/включен)
                     setDisabledDays(prev => ({
                         ...prev,
-                        service: prev.service.includes(day) ? prev.service.filter(d => d !== day) : [...prev.service, day]
+                        service: prev.service.includes(day)
+                            ? prev.service.filter(d => d !== day)
+                            : [...prev.service, day]
                     }));
                 }
+
+                // Сохраняем время и день последнего клика
                 lastClickTime.current = currentTime;
                 lastClickedDay.current = day;
             }
         };
 
+        // Добавляем обработчики клика для всех ячеек с днями
         document.querySelectorAll('.day-cell').forEach(cell => {
             cell.addEventListener('click', handleDoubleClick);
         });
 
+        // Удаляем обработчики при размонтировании
         return () => {
             document.querySelectorAll('.day-cell').forEach(cell => {
                 cell.removeEventListener('click', handleDoubleClick);
@@ -65,37 +110,54 @@ function ServiceTable({ theme }) {
         };
     }, []);
 
+    // Эффект для управления вводом данных в таблице
     useEffect(() => {
+        // Получаем все инпуты таблицы, кроме readonly и disabled
         const inputs = document.querySelectorAll('.table-input:not([readonly]):not([disabled])');
+
+        // Обработчик клика по инпуту
         const handleClick = function () {
+            // Если значение 0 и день не отключен, очищаем поле
             if (this.value === '0' && !disabledDays.service.includes(parseInt(this.dataset.index.split('-')[0]))) {
                 this.value = '';
             }
         };
+
+        // Обработчик ввода данных
         const handleInput = function (e) {
             let value = this.value.trim();
+            // Удаляем ведущие нули (кроме 0. и подобных)
             if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
                 value = value.replace(/^0+/, '');
             }
             if (value === '') value = '0';
             this.value = value;
+            // Получаем индексы строки и колонки
             const [row, col] = this.dataset.index.split('-');
+            // Обновляем данные
             handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), value);
         };
+
+        // Обработчик потери фокуса
         const handleBlur = function () {
             const value = this.value.trim();
+            // Если введено не число или пустая строка, устанавливаем 0
             if (!/^\d+$/.test(value) || value === '') {
                 this.value = '0';
             }
             const [row, col] = this.dataset.index.split('-');
             handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), this.value);
         };
+
+        // Обработчик нажатия клавиш
         const handleKeyDown = function (e) {
+            // При нажатии Enter вызываем blur
             if (e.key === 'Enter') {
                 this.blur();
             }
         };
 
+        // Добавляем обработчики ко всем инпутам
         inputs.forEach(input => {
             input.addEventListener('click', handleClick);
             input.addEventListener('input', handleInput);
@@ -103,6 +165,7 @@ function ServiceTable({ theme }) {
             input.addEventListener('keydown', handleKeyDown);
         });
 
+        // Обновляем первую колонку (итого) для всех дней
         setTableData(prev => ({
             ...prev,
             service: {
@@ -111,6 +174,7 @@ function ServiceTable({ theme }) {
             }
         }));
 
+        // Удаляем обработчики при размонтировании
         return () => {
             inputs.forEach(input => {
                 input.removeEventListener('click', handleClick);
@@ -121,6 +185,7 @@ function ServiceTable({ theme }) {
         };
     }, [disabledDays.service, tableData.service.daily]);
 
+    // Рендеринг компонента
     return (
         <div className={`p-4 ${theme}`}>
             <h2 className="text-2xl font-bold text-center mb-4 flex justify-between items-center">
@@ -210,16 +275,80 @@ function ServiceTable({ theme }) {
                             <th>В т.ч. РДЧ (из гр.3)</th>
                         </tr>
                         <tr className="header">
+                            {/* Основная строка с номерами колонок (1-63) */}
                             <th className="sticky-col-1">1</th>
-                            {Array.from({ length: columnCount }, (_, i) => (
-                                <th key={i} className={i === 0 ? 'sticky-col-2' : ''}>{i + 2}</th>
-                            ))}
+                            {/* Число месяца */}
+                            <th className="sticky-col-2">2</th>
+                            {/* Всего */}
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9</th>
+                            <th>10</th>
+                            <th>11</th>
+                            <th>12</th>
+                            <th>13</th>
+                            <th>14</th>
+                            <th>15</th>
+                            <th>16</th>
+                            <th>17</th>
+                            <th>18</th>
+                            <th>19</th>
+                            <th>20</th>
+                            <th>21</th>
+                            <th>22</th>
+                            <th>23</th>
+                            <th>24</th>
+                            <th>25</th>
+                            <th>26</th>
+                            <th>27</th>
+                            <th>28</th>
+                            <th>29</th>
+                            <th>30</th>
+                            <th></th>
+                            <th>31</th>
+                            <th>32</th>
+                            <th>33</th>
+                            <th>34</th>
+                            <th>35</th>
+                            <th>36</th>
+                            <th>37</th>
+                            <th>38</th>
+                            <th>39</th>
+                            <th>40</th>
+                            <th>41</th>
+                            <th>42</th>
+                            <th>43</th>
+                            <th>44</th>
+                            <th>45</th>
+                            <th>46</th>
+                            <th>47</th>
+                            <th>48</th>
+                            <th>49</th>
+                            <th>50</th>
+                            <th>51</th>
+                            <th>52</th>
+                            <th>53</th>
+                            <th>54</th>
+                            <th>55</th>
+                            <th>56</th>
+                            <th>57</th>
+                            <th>58</th>
+                            <th>59</th>
+                            <th>60</th>
+                            <th>61</th>
+                            <th>62</th>
+                            {/* Последняя колонка */}
                         </tr>
                         </thead>
                         <tbody>
+                        {/* Строка с начальными данными (состояние на начало месяца) */}
                         <tr>
                             <td className="sticky-col-1 day-cell">Состоит к началу месяца</td>
-                            {Array.from({ length: columnCount }, (_, col) => (
+                            {Array.from({length: columnCount}, (_, col) => (
                                 <td key={col} className={col === 0 ? 'sticky-col-2' : ''}>
                                     <input
                                         type="number"
@@ -233,6 +362,8 @@ function ServiceTable({ theme }) {
                                 </td>
                             ))}
                         </tr>
+
+                        {/* Строки для каждого дня месяца (1-31) */}
                         {days.map(day => (
                             <tr key={day} className={disabledDays.service.includes(day - 1) ? 'disabled-row' : ''}>
                                 <td className={`sticky-col-1 day-cell ${disabledDays.service.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
@@ -253,6 +384,8 @@ function ServiceTable({ theme }) {
                                 ))}
                             </tr>
                         ))}
+
+                        {/* Строка с итогами за месяц */}
                         <tr>
                             <td className="sticky-col-1 day-cell">Всего за месяц</td>
                             {Array.from({ length: columnCount }, (_, col) => (
@@ -261,13 +394,16 @@ function ServiceTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        value={tableData.service.daily.reduce((sum, row, index) => disabledDays.service.includes(index) ? sum : sum + row[col], 0)}
+                                        value={tableData.service.daily.reduce((sum, row, index) =>
+                                            disabledDays.service.includes(index) ? sum : sum + row[col], 0)}
                                         className="table-input"
                                         readOnly
                                     />
                                 </td>
                             ))}
                         </tr>
+
+                        {/* Строка с итогами с начала года */}
                         <tr>
                             <td className="sticky-col-1 day-cell">Итого с начала года</td>
                             {Array.from({ length: columnCount }, (_, col) => (
@@ -276,7 +412,9 @@ function ServiceTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        value={tableData.service.initial[col] + tableData.service.daily.reduce((sum, row, index) => disabledDays.service.includes(index) ? sum : sum + row[col], 0)}
+                                        value={tableData.service.initial[col] +
+                                            tableData.service.daily.reduce((sum, row, index) =>
+                                                disabledDays.service.includes(index) ? sum : sum + row[col], 0)}
                                         className="table-input"
                                         readOnly
                                     />
