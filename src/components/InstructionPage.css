@@ -1,0 +1,23 @@
+.instruction-content {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.instruction-content h3 {
+    color: #333;
+    margin-top: 20px;
+}
+
+.dark-theme .instruction-content h3 {
+    color: #e0e0e0;
+}
+
+.instruction-content p,
+.instruction-content ul {
+    margin-bottom: 15px;
+}
+
+.instruction-content ul li {
+    margin-bottom: 10px;
+}
