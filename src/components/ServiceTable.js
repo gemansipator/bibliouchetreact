@@ -201,13 +201,26 @@ function ServiceTable({ theme }) {
                 <div className="table-container">
                     <table className="service-table">
                         <thead className="sticky-header">
+                        {/* Новый уровень заголовка */}
                         <tr className="header">
-                            <th className="sticky-col-1" rowSpan="3">Число месяца</th>
-                            <th className="sticky-col-2" colSpan="4">В стационарном режиме</th>
-                            <th colSpan="56">Отдельные группы пользователей</th>
+                            <th className="sticky-col-1"></th>
+                            {/*<th className="sticky-col-2" colSpan="3"></th> /!* Пустая ячейка 3–5 *!/*/}
+                            <th colSpan="4"></th>
+                            <th colSpan="2"></th>
+                            <th colSpan="18">Выдано (просмотрено) документов из фондов библиотеки</th>             {/* 9–15 */}
+                            <th colSpan="5">Пример 3 блок</th>             {/* 16–20 */}
+                            <th colSpan="44">Остальные</th>                {/* 21–62 */}
                         </tr>
                         <tr className="header">
-                            <th className="sticky-col-2" rowSpan="2">Всего</th>
+                            <th className="sticky-col-1" rowSpan="3">Число месяца</th>
+                            <th className="sticky-col-3" colSpan="1"></th>
+                            <th className="sticky-col-3" colSpan="3">В стационарном режиме</th>
+                            <th className="sticky-col-3" colSpan="2"></th>
+                            <th className="sticky-col-3" colSpan="3">В стационарном режиме</th>
+                            <th colSpan="58">Отдельные группы пользователей</th>
+                        </tr>
+                        <tr className="header">
+                        <th className="sticky-col-2" rowSpan="2">Всего</th>
                             <th colSpan="3">В том числе</th>
                             <th rowSpan="2">В т.ч. обслуженных во внестационарных условиях</th>
                             <th rowSpan="2">в т.ч. удалённых пользователей (из гр.2)</th>
