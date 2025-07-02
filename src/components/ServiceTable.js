@@ -347,7 +347,7 @@ function ServiceTable({ theme }) {
                             <th>28</th>
                             <th>29</th>
                             <th>30</th>
-                            <th></th>
+                            <th>empty</th>
                             <th>31</th>
                             <th>32</th>
                             <th>33</th>
