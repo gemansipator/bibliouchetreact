@@ -12,7 +12,7 @@ function App() {
     const [tableData, setTableData] = useState({
         users: JSON.parse(localStorage.getItem('tableData_users')) || { initial: Array(20).fill(0), daily: Array.from({ length: 31 }, () => Array(20).fill(0)) },
         visits: JSON.parse(localStorage.getItem('tableData_visits')) || { initial: Array(21).fill(0), daily: Array.from({ length: 31 }, () => Array(21).fill(0)) },
-        service: JSON.parse(localStorage.getItem('tableData_service')) || { initial: Array(61).fill(0), daily: Array.from({ length: 31 }, () => Array(61).fill(0)) },
+        service: JSON.parse(localStorage.getItem('tableData_service')) || { initial: Array(62).fill(0), daily: Array.from({ length: 31 }, () => Array(62).fill(0)) },
     });
     const [disabledDays, setDisabledDays] = useState({
         users: JSON.parse(localStorage.getItem('disabledDays_users')) || [],
@@ -39,7 +39,10 @@ function App() {
     const clearTableData = (tableName) => {
         setTableData(prev => ({
             ...prev,
-            [tableName]: { initial: Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 61).fill(0), daily: Array.from({ length: 31 }, () => Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 61).fill(0)) }
+            [tableName]: {
+                initial: Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 62).fill(0),
+                daily: Array.from({ length: 31 }, () => Array(tableName === 'users' ? 20 : tableName === 'visits' ? 21 : 62).fill(0))
+            }
         }));
         setDisabledDays(prev => ({
             ...prev,

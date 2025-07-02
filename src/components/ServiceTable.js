@@ -5,7 +5,7 @@ import './ServiceTable.css';
 function ServiceTable({ theme }) {
     const { tableData, setTableData, disabledDays, setDisabledDays, clearTableData } = useContext(TableContext);
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const columnCount = 61;
+    const columnCount = 62;
 
     const calculateColumn1 = (rowIndex) => {
         if (disabledDays.service.includes(rowIndex)) return 0;
@@ -139,10 +139,10 @@ function ServiceTable({ theme }) {
                         <tr className="header">
                             <th className="sticky-col-1" rowSpan="3">Число месяца</th>
                             <th className="sticky-col-2" colSpan="6">Число зарегистрированных пользователей библиотеки</th>
-                            <th colSpan="55">Отдельные группы пользователей</th>
+                            <th colSpan="56">Отдельные группы пользователей</th>
                         </tr>
                         <tr className="header">
-                            <th className="sticky-col-2" rowSpan="2">Всего</th>
+                            <th className="sticky-col-2" rowSpan="2">Всего.</th>
                             <th colSpan="3">В т.ч. пользователей в стенах библиотеки</th>
                             <th rowSpan="2">В т.ч. обслуженных во внестационарных условиях</th>
                             <th rowSpan="2">в т.ч. удалённых пользователей (из гр.2)</th>
@@ -160,9 +160,49 @@ function ServiceTable({ theme }) {
                             <th rowSpan="2">11 кл.</th>
                             <th rowSpan="2">РДЧ</th>
                             <th rowSpan="2">Инвалиды</th>
-                            {Array.from({ length: 41 }, (_, i) => (
-                                <th key={`extra-${i}`} rowSpan="2">{`Доп. ${i + 1}`}</th>
-                            ))}
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Естеств. науки (2)</th>
+                            <th rowSpan="2">Техника (3)</th>
+                            <th rowSpan="2">Сельское и лесное хозяйство (4)</th>
+                            <th rowSpan="2">Здравоохранение, медицинские науки (5)</th>
+                            <th rowSpan="2">60, 65, 66, 67, 68</th>
+                            <th rowSpan="2">История (63)</th>
+                            <th rowSpan="2">Краеведение</th>
+                            <th rowSpan="2">Культура, наука (71, 72, 74, 75, 76, 77, 78, 79)</th>
+                            <th rowSpan="2">Филогические науки (80, 81, 82, 83)</th>
+                            <th rowSpan="2">Худ. литература (84)</th>
+                            <th rowSpan="2">Искусство (85)</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп2</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+                            <th rowSpan="2">Доп</th>
+
                         </tr>
                         <tr className="header">
                             <th>Всего</th>
