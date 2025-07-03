@@ -1,8 +1,10 @@
+/* Основная обертка для таблицы - занимает 100% ширины родителя */
 .table-wrapper {
     position: relative;
     width: 100%;
 }
 
+/* Контейнер таблицы с прокруткой */
 .table-container {
     overflow-x: auto;
     max-height: 90vh;
@@ -11,6 +13,7 @@
     padding-bottom: 15px;
 }
 
+/* Основные стили таблицы пользователей */
 .service-table {
     border-collapse: collapse;
     width: auto;
@@ -28,10 +31,12 @@
     to { opacity: 1; }
 }
 
+/* Темная тема для таблицы */
 .dark-theme .service-table {
     background: linear-gradient(145deg, #2d2d2d 0%, #222222 100%);
 }
 
+/* Заголовок таблицы с фиксированной позицией */
 .sticky-header {
     position: sticky;
     top: 0;
@@ -39,6 +44,7 @@
     background: inherit;
 }
 
+/* Общие стили для ячеек таблицы */
 .service-table td,
 .service-table th {
     border: 1px solid #444;
@@ -54,42 +60,50 @@
     text-overflow: ellipsis;
 }
 
+/* Темная тема для ячеек */
 .dark-theme .service-table td,
 .dark-theme .service-table th {
     border: 1px solid #555;
 }
 
+/* Стили заголовочных ячеек */
 .service-table th {
     background: linear-gradient(90deg, #e0e0e0 0%, #d0d0d0 100%);
     color: #333;
     font-weight: bold;
 }
 
+/* Темная тема для заголовков */
 .dark-theme .service-table th {
     background: linear-gradient(90deg, #3a3a3a 0%, #2a2a2a 100%);
     color: #e0e0e0;
 }
 
+/* Стили ячеек с данными */
 .service-table td {
     background: #ffffff;
     color: #333;
     padding: 12px;
 }
 
+/* Темная тема для ячеек с данными */
 .dark-theme .service-table td {
     background: #1e1e1e;
     color: #e0e0e0;
 }
 
+/* Эффект при наведении на строку */
 .service-table tr:hover td {
     background: #f0f0f0;
     cursor: pointer;
 }
 
+/* Темная тема для эффекта наведения */
 .dark-theme .service-table tr:hover td {
     background: #2d2d2d;
 }
 
+/* Стили для полей ввода в таблице */
 .table-input {
     width: 100%;
     border: none;
@@ -103,36 +117,43 @@
     -moz-appearance: textfield;
 }
 
+/* Убирает стрелки у числовых полей ввода в WebKit */
 .table-input::-webkit-inner-spin-button,
 .table-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
+/* Стили для поля ввода при фокусе */
 .table-input:focus {
     outline: none;
     border-bottom: 2px solid #005bbb;
     background: #f0f0f0;
 }
 
+/* Темная тема для поля ввода при фокусе */
 .dark-theme .table-input:focus {
     border-bottom: 2px solid #007acc;
     background: #2d2d2d;
 }
 
+/* Общий стиль для заголовков */
 .header {
     font-weight: bold;
 }
 
+/* Стиль для ячеек с днями */
 .day-cell {
     font-weight: bold;
     background: #e0e0e0;
 }
 
+/* Темная тема для ячеек с днями */
 .dark-theme .day-cell {
     background: #1e1e1e;
 }
 
+/* Стили для отключённой строки */
 .disabled-row {
     background-color: #ffebee !important;
     opacity: 0.7 !important;
@@ -142,6 +163,7 @@
     opacity: 0.7 !important;
 }
 
+/* Стили для ячейки дня в отключённой строке */
 .disabled-day {
     background-color: #b71c1c !important;
     color: white !important;
@@ -151,6 +173,7 @@
     background-color: #b71c1c !important;
 }
 
+/* Стиль для отключённого поля ввода - визуально показывает 0 */
 .disabled-input {
     position: relative;
 }
@@ -200,19 +223,20 @@
 /* Стили для кнопки очистки */
 .clear-button {
     padding: 8px 16px;
-    background-color: #ff4444;
+    background: linear-gradient(145deg, #2c3e50 0%, #3498db 100%);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
+    margin-right: 10px; /* Расстояние между кнопками */
 }
 .clear-button:hover {
-    background-color: #cc0000;
+    background: linear-gradient(145deg, #34495e 0%, #2980b9 100%);
 }
 .dark-theme .clear-button {
-    background-color: #ff6666;
+    background: linear-gradient(145deg, #34495e 0%, #2980b9 100%);
 }
 .dark-theme .clear-button:hover {
-    background-color: #ff3333;
+    background: linear-gradient(145deg, #2c3e50 0%, #3498db 100%);
 }
