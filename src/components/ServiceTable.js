@@ -189,7 +189,7 @@ function ServiceTable({ theme }) {
     return (
         <div className={`p-4 ${theme}`}>
             <h2 className="text-2xl font-bold text-center mb-4 flex justify-between items-center">
-                Библиотечно-информационное обслуживание пользователей за [месяц] [год]
+                Библиотечно-информационное обслуживание пользователей за месяц и год
                 <button
                     onClick={() => clearTableData('service')}
                     className="clear-button"

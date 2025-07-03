@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "ffmpeg-static": "^5.2.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
     "react": "^19.1.0",
@@ -29,11 +30,22 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
@@ -45,13 +57,17 @@
   "build": {
     "appId": "site.javadev.bibliouchetreact",
     "productName": "Дневник детской библиотеки",
-    "files": ["build/**/*", "main.js"],
+    "files": [
+      "build/**/*",
+      "main.js",
+      "node_modules/ffmpeg-static/**/*"
+    ],
     "directories": {
       "output": "dist"
     },
     "win": {
       "target": "nsis",
-
+      "icon": "public/favicon.ico",
       "sign": false
     },
     "nsis": {

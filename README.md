@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+# Дневник детской библиотеки
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Добро пожаловать в проект "Дневник детской библиотеки" — это приложение, разработанное с использованием React и Electron для управления данными библиотеки. Проект предназначен для упрощения учета посещений, услуг и пользователей детской библиотеки.
 
-## Available Scripts
+## Описание
 
-In the project directory, you can run:
+Приложение позволяет:
+- Вести учет посещений.
+- Управлять данными пользователей.
+- Отслеживать предоставляемые услуги.
+- Экспортировать данные в PDF.
 
-### `npm start`
+## Установка
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Требования
+- [Node.js](https://nodejs.org/) (версия 16.x или выше).
+- [npm](https://www.npmjs.com/) (идёт вместе с Node.js).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Шаги установки
+1. Клонируйте репозиторий:
+2. git clone https://github.com/gemansipator/bibliouchetreact.git
+   cd bibliouchetreact
+2. Установите зависимости:
+   npm install
+3. Соберите и запустите приложение:
+   npm run build:electron
 
-### `npm test`
+После сборки в папке `dist` появится инсталлятор (например, `Дневник детской библиотеки Setup 1.0.0.exe`).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Разработка
+Для разработки используйте:
+- Запуск в режиме разработки:
+  npm run electron-dev
+  Это одновременно запускает React на `http://localhost:3000` и Electron.
 
-### `npm run build`
+## Использование
+1. Установите приложение, запустив инсталлятор из папки `dist`.
+2. Откройте приложение и начните ввод данных о посещениях, пользователях и услугах.
+3. Используйте меню или интерфейс для экспорта данных в PDF.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Сборка
+- Для сборки готового инсталлятора выполните:
+  npm run build:electron
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Убедитесь, что файл `public/favicon.ico` (иконка приложения) имеет формат ICO и размер минимум 256x256 пикселей.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Лицензия
+Проект распространяется под личной лицензией автора. Для коммерческого использования свяжитесь с автором: Николай Ломакин <gemansipator@mail.ru>.
 
-### `npm run eject`
+## Автор
+- **Николай Ломакин** (<gemansipator@mail.ru>)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+cd C:\Users\ПУТЬ К ПРОЕКТУ\
+Remove-Item -Recurse -Force build, dist, node_modules
+npm cache clean --force
+Remove-Item -Recurse -Force "$env:LOCALAPPDATA\electron-builder\Cache"
+npm install
+set ELECTRON_BUILDER_ALLOW_UNRESOURCED_EXECUTABLES=true
+npm run build:electron
