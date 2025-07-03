@@ -1,17 +1,33 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TableContext } from '../App';
 import './UsersTable.css';
 
+/**
+ * Компонент таблицы для учета числа пользователей библиотеки
+ * @param {Object} props - Свойства компонента
+ * @param {string} props.theme - Тема оформления (светлая/темная)
+ */
 function UsersTable({ theme }) {
     const { tableData, setTableData, disabledDays, setDisabledDays, clearTableData } = useContext(TableContext);
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
     const columnCount = 20;
 
+    /**
+     * Вычисляет сумму значений для первой колонки (итого за день)
+     * @param {number} rowIndex - Индекс строки (день месяца)
+     * @returns {number} Сумма значений с 6-й по 17-ю колонки
+     */
     const calculateColumn1 = (rowIndex) => {
         if (disabledDays.users.includes(rowIndex)) return 0;
         return tableData.users.daily[rowIndex].slice(6, 18).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
+    /**
+     * Обрабатывает изменение значения в ячейке таблицы
+     * @param {string|number} row - Индекс строки ('initial' для начальных данных или номер дня)
+     * @param {number} col - Индекс колонки
+     * @param {string} value - Новое значение
+     */
     const handleInputChange = (row, col, value) => {
         const newValue = value === '' ? 0 : parseInt(value) || 0;
         setTableData(prev => ({
@@ -32,6 +48,20 @@ function UsersTable({ theme }) {
                 }
             }));
         }
+    };
+
+    /**
+     * Очищает значения строки "Состоит к началу месяца" (initial)
+     */
+    const clearInitialData = () => {
+        console.log('Очистка начальных данных для UsersTable');
+        setTableData(prev => ({
+            ...prev,
+            users: {
+                ...prev.users,
+                initial: Array(columnCount).fill(0)
+            }
+        }));
     };
 
     const lastClickTime = useRef(0);
@@ -124,12 +154,18 @@ function UsersTable({ theme }) {
     return (
         <div className={`p-4 ${theme}`}>
             <h2 className="text-2xl font-bold text-center mb-4 flex justify-between items-center">
-                Число пользователей библиотеки за месяц и год
+                <div>Число пользователей библиотеки за месяц и год</div>
                 <button
                     onClick={() => clearTableData('users')}
                     className="clear-button"
                 >
-                    Очистить таблицу
+                    Очистить таблицу (месяц)
+                </button>
+                <button
+                    onClick={clearInitialData}
+                    className="clear-button"
+                >
+                    Очистить начальные данные
                 </button>
             </h2>
             <div className="table-wrapper">
@@ -199,7 +235,7 @@ function UsersTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        defaultValue={tableData.users.initial[col]}
+                                        value={tableData.users.initial[col]}
                                         className="table-input"
                                         data-index={`initial-${col}`}
                                         onChange={(e) => handleInputChange('initial', col, e.target.value)}

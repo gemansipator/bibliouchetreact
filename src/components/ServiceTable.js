@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TableContext } from '../App';
 import './ServiceTable.css';
 
@@ -8,18 +8,15 @@ import './ServiceTable.css';
  * @param {string} props.theme - Тема оформления (светлая/темная)
  */
 function ServiceTable({ theme }) {
-    // Получаем данные и методы из контекста таблицы
     const {
-        tableData,         // Данные таблицы
-        setTableData,      // Функция обновления данных таблицы
-        disabledDays,      // Массив отключенных дней
-        setDisabledDays,   // Функция обновления отключенных дней
-        clearTableData     // Функция очистки данных таблицы
+        tableData,
+        setTableData,
+        disabledDays,
+        setDisabledDays,
+        clearTableData
     } = useContext(TableContext);
 
-    // Создаем массив дней месяца (1-31)
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    // Количество колонок в таблице
     const columnCount = 63;
 
     /**
@@ -28,9 +25,7 @@ function ServiceTable({ theme }) {
      * @returns {number} Сумма значений с 25 по 35 колонку
      */
     const calculateColumn1 = (rowIndex) => {
-        // Если день отключен, возвращаем 0
         if (disabledDays.service.includes(rowIndex)) return 0;
-        // Суммируем значения с 25 по 36 колонку
         return tableData.service.daily[rowIndex].slice(24, 37).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
     };
 
@@ -41,22 +36,18 @@ function ServiceTable({ theme }) {
      * @param {string} value - Новое значение
      */
     const handleInputChange = (row, col, value) => {
-        // Преобразуем значение в число (0 если пустая строка или не число)
         const newValue = value === '' ? 0 : parseInt(value) || 0;
 
-        // Обновляем состояние таблицы
         setTableData(prev => ({
             ...prev,
             service: {
                 ...prev.service,
-                // Обновляем либо начальные данные, либо ежедневные
                 [row === 'initial' ? 'initial' : 'daily']: row === 'initial'
                     ? [...prev.service.initial].map((v, i) => i === col ? newValue : v)
                     : prev.service.daily.map((r, i) => i === row ? [...r].map((v, j) => j === col ? newValue : v) : r)
             }
         }));
 
-        // Если изменяем не начальные данные, пересчитываем первую колонку
         if (row !== 'initial') {
             setTableData(prev => ({
                 ...prev,
@@ -68,21 +59,31 @@ function ServiceTable({ theme }) {
         }
     };
 
-    // Референсы для обработки двойного клика
-    const lastClickTime = useRef(0);      // Время последнего клика
-    const lastClickedDay = useRef(null);  // Последний кликнутый день
+    /**
+     * Очищает значения строки "Состоит к началу месяца" (initial)
+     */
+    const clearInitialData = () => {
+        console.log('Очистка начальных данных для ServiceTable');
+        setTableData(prev => ({
+            ...prev,
+            service: {
+                ...prev.service,
+                initial: Array(columnCount).fill(0)
+            }
+        }));
+    };
 
-    // Эффект для обработки двойного клика по дню (отключение/включение дня)
+    const lastClickTime = useRef(0);
+    const lastClickedDay = useRef(null);
+
     useEffect(() => {
         const handleDoubleClick = (e) => {
             const dayCell = e.target.closest('td.day-cell');
             if (dayCell) {
-                const day = parseInt(dayCell.textContent) - 1; // Получаем номер дня (0-30)
+                const day = parseInt(dayCell.textContent) - 1;
                 const currentTime = Date.now();
 
-                // Проверяем был ли это двойной клик по тому же дню
                 if (lastClickedDay.current === day && (currentTime - lastClickTime.current) <= 1500) {
-                    // Переключаем состояние дня (отключен/включен)
                     setDisabledDays(prev => ({
                         ...prev,
                         service: prev.service.includes(day)
@@ -91,18 +92,15 @@ function ServiceTable({ theme }) {
                     }));
                 }
 
-                // Сохраняем время и день последнего клика
                 lastClickTime.current = currentTime;
                 lastClickedDay.current = day;
             }
         };
 
-        // Добавляем обработчики клика для всех ячеек с днями
         document.querySelectorAll('.day-cell').forEach(cell => {
             cell.addEventListener('click', handleDoubleClick);
         });
 
-        // Удаляем обработчики при размонтировании
         return () => {
             document.querySelectorAll('.day-cell').forEach(cell => {
                 cell.removeEventListener('click', handleDoubleClick);
@@ -110,38 +108,28 @@ function ServiceTable({ theme }) {
         };
     }, []);
 
-    // Эффект для управления вводом данных в таблице
     useEffect(() => {
-        // Получаем все инпуты таблицы, кроме readonly и disabled
         const inputs = document.querySelectorAll('.table-input:not([readonly]):not([disabled])');
 
-        // Обработчик клика по инпуту
         const handleClick = function () {
-            // Если значение 0 и день не отключен, очищаем поле
             if (this.value === '0' && !disabledDays.service.includes(parseInt(this.dataset.index.split('-')[0]))) {
                 this.value = '';
             }
         };
 
-        // Обработчик ввода данных
         const handleInput = function (e) {
             let value = this.value.trim();
-            // Удаляем ведущие нули (кроме 0. и подобных)
             if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
                 value = value.replace(/^0+/, '');
             }
             if (value === '') value = '0';
             this.value = value;
-            // Получаем индексы строки и колонки
             const [row, col] = this.dataset.index.split('-');
-            // Обновляем данные
             handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), value);
         };
 
-        // Обработчик потери фокуса
         const handleBlur = function () {
             const value = this.value.trim();
-            // Если введено не число или пустая строка, устанавливаем 0
             if (!/^\d+$/.test(value) || value === '') {
                 this.value = '0';
             }
@@ -149,15 +137,12 @@ function ServiceTable({ theme }) {
             handleInputChange(row === 'initial' ? 'initial' : parseInt(row), parseInt(col), this.value);
         };
 
-        // Обработчик нажатия клавиш
         const handleKeyDown = function (e) {
-            // При нажатии Enter вызываем blur
             if (e.key === 'Enter') {
                 this.blur();
             }
         };
 
-        // Добавляем обработчики ко всем инпутам
         inputs.forEach(input => {
             input.addEventListener('click', handleClick);
             input.addEventListener('input', handleInput);
@@ -165,7 +150,6 @@ function ServiceTable({ theme }) {
             input.addEventListener('keydown', handleKeyDown);
         });
 
-        // Обновляем первую колонку (итого) для всех дней
         setTableData(prev => ({
             ...prev,
             service: {
@@ -174,7 +158,6 @@ function ServiceTable({ theme }) {
             }
         }));
 
-        // Удаляем обработчики при размонтировании
         return () => {
             inputs.forEach(input => {
                 input.removeEventListener('click', handleClick);
@@ -185,23 +168,27 @@ function ServiceTable({ theme }) {
         };
     }, [disabledDays.service, tableData.service.daily]);
 
-    // Рендеринг компонента
     return (
         <div className={`p-4 ${theme}`}>
             <h2 className="text-2xl font-bold text-center mb-4 flex justify-between items-center">
-                Библиотечно-информационное обслуживание пользователей за месяц и год
+                <div>Библиотечно-информационное обслуживание пользователей за месяц и год</div>
                 <button
                     onClick={() => clearTableData('service')}
                     className="clear-button"
                 >
-                    Очистить таблицу
+                    Очистить таблицу (месяц)
+                </button>
+                <button
+                    onClick={clearInitialData}
+                    className="clear-button"
+                >
+                    Очистить начальные данные
                 </button>
             </h2>
             <div className="table-wrapper">
                 <div className="table-container">
                     <table className="service-table">
                         <thead className="sticky-header">
-                        {/* Новый уровень заголовка */}
                         <tr className="header">
                             <th className="sticky-col-1"></th>
                             <th colSpan="4"></th>
@@ -313,11 +300,8 @@ function ServiceTable({ theme }) {
                             <th>В т.ч. РДЧ (из гр.3)</th>
                         </tr>
                         <tr className="header">
-                            {/* Основная строка с номерами колонок (1-63) */}
                             <th className="sticky-col-1">1</th>
-                            {/* Число месяца */}
                             <th className="sticky-col-2">2</th>
-                            {/* Всего */}
                             <th>3</th>
                             <th>4</th>
                             <th>5</th>
@@ -380,11 +364,9 @@ function ServiceTable({ theme }) {
                             <th>60</th>
                             <th>61</th>
                             <th>62</th>
-                            {/* Последняя колонка */}
                         </tr>
                         </thead>
                         <tbody>
-                        {/* Строка с начальными данными (состояние на начало месяца) */}
                         <tr>
                             <td className="sticky-col-1 day-cell">Состоит к началу месяца</td>
                             {Array.from({length: columnCount}, (_, col) => (
@@ -393,7 +375,7 @@ function ServiceTable({ theme }) {
                                         type="number"
                                         min="0"
                                         step="1"
-                                        defaultValue={tableData.service.initial[col]}
+                                        value={tableData.service.initial[col]}
                                         className="table-input"
                                         data-index={`initial-${col}`}
                                         onChange={(e) => handleInputChange('initial', col, e.target.value)}
@@ -402,7 +384,6 @@ function ServiceTable({ theme }) {
                             ))}
                         </tr>
 
-                        {/* Строки для каждого дня месяца (1-31) */}
                         {days.map(day => (
                             <tr key={day} className={disabledDays.service.includes(day - 1) ? 'disabled-row' : ''}>
                                 <td className={`sticky-col-1 day-cell ${disabledDays.service.includes(day - 1) ? 'disabled-day' : ''}`}>{day}</td>
@@ -424,7 +405,6 @@ function ServiceTable({ theme }) {
                             </tr>
                         ))}
 
-                        {/* Строка с итогами за месяц */}
                         <tr>
                             <td className="sticky-col-1 day-cell">Всего за месяц</td>
                             {Array.from({ length: columnCount }, (_, col) => (
@@ -442,7 +422,6 @@ function ServiceTable({ theme }) {
                             ))}
                         </tr>
 
-                        {/* Строка с итогами с начала года */}
                         <tr>
                             <td className="sticky-col-1 day-cell">Итого с начала года</td>
                             {Array.from({ length: columnCount }, (_, col) => (
