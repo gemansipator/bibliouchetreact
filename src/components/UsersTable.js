@@ -124,7 +124,7 @@ function UsersTable({ theme }) {
     return (
         <div className={`p-4 ${theme}`}>
             <h2 className="text-2xl font-bold text-center mb-4 flex justify-between items-center">
-                Число пользователей библиотеки за [месяц] [год]
+                Число пользователей библиотеки за месяц и год
                 <button
                     onClick={() => clearTableData('users')}
                     className="clear-button"

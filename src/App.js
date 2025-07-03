@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from 'react';
 import UsersTable from './components/UsersTable';
 import VisitsTable from './components/VisitsTable';
 import ServiceTable from './components/ServiceTable';
+import InstructionPage from './components/InstructionPage';
 import './App.css';
 
 export const TableContext = createContext();
@@ -104,11 +105,24 @@ function App() {
                     >
                         Обслуживание
                     </button>
+                    <button
+                        onClick={() => setActiveTab('instruction')}
+                        className={`nav-button ${activeTab === 'instruction' ? 'active' : ''}`}
+                    >
+                        Инструкция
+                    </button>
                 </nav>
 
                 <main className="app-main">
-                    {activeTab === 'users' ? <UsersTable theme={theme} /> : activeTab === 'visits' ? <VisitsTable theme={theme} /> : <ServiceTable theme={theme} />}
+                    {activeTab === 'users' ? <UsersTable theme={theme} /> : activeTab === 'visits' ? <VisitsTable theme={theme} /> : activeTab === 'service' ? <ServiceTable theme={theme} /> : <InstructionPage theme={theme} />}
                 </main>
+
+                {/* Футер с авторством */}
+                <footer className="app-footer">
+                    <p>
+                        © Ломакин Н. А. 2025, версия 1.0 | Почта: <a href="mailto:gemansipator@mail.ru">gemansipator@mail.ru</a>
+                    </p>
+                </footer>
             </div>
         </TableContext.Provider>
     );
