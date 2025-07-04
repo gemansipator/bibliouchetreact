@@ -5,13 +5,14 @@ function createWindow() {
     const win = new BrowserWindow({
         width: 1920,
         height: 1080,
+        maximize: true, // Запуск в развернутом режиме
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
         },
     });
-    // Загружаем React-приложение через локальный сервер
-    win.loadURL('http://localhost:3000');
+    // Загружаем собранное приложение
+    win.loadFile(path.join(__dirname, 'build', 'index.html')); // Для продакшена
 }
 
 app.whenReady().then(() => {
